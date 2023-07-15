@@ -1,0 +1,36 @@
+package com.ltx.web;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+/**
+ * 解决跨域问题
+ */
+@Configuration
+public class CorsConfig {
+
+    /**
+     * 获取跨域过滤器
+     */
+    @Bean
+    public CorsWebFilter corsWebFilter(){
+        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration=new CorsConfiguration();
+
+        //配置跨域
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedOrigin("*");
+        //允许携带cookie跨域
+        configuration.setAllowCredentials(true);
+        //  "/**"表示处理所有的跨域请求
+        source.registerCorsConfiguration("/**",configuration);
+        return new CorsWebFilter(source);
+    }
+}
+
+
