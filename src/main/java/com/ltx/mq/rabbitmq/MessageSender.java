@@ -14,8 +14,8 @@ public class MessageSender {
     private AmqpTemplate template;
 
 
-    public void sendMessage(String queueName, Object message) {
-        template.convertAndSend("Exchange", "RoutingKey", "Hello, RabbitMQ!");
+    public void sendMessage(String exchangeName, String routingKey, Object obj) {
+        template.convertAndSend(exchangeName, routingKey, obj);
     }
 }
 
