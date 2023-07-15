@@ -1,4 +1,4 @@
-package com.ltx.globalExceptionHandle;
+package com.ltx.exception;
 
 
 import com.ltx.util.R;
