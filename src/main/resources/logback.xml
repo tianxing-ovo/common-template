@@ -4,5 +4,3 @@
     <logger name="org.springframework" level="off"/>
     <logger name="com.ltx.Application" level="off"/>
 </configuration>
-
-
