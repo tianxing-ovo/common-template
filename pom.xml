@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.ltx</groupId>
-    <artifactId>springboot-template</artifactId>
+    <artifactId>template-code</artifactId>
     <version>1.0</version>
-    <name>springboot-template</name>
-    <description>springboot模板代码</description>
+    <name>template-code</name>
+    <description>模板代码</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
