@@ -1,4 +1,4 @@
-package com.ltx.threadpool;
+package com.ltx.threadPool;
 
 
 import lombok.Data;

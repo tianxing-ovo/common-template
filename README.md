@@ -6,3 +6,7 @@
 3. ## Global Exception Handle Template Code
 
 4. ## Rabbitmq Template Code
+
+5. ## ThreadPool Template Code
+
+6. ## Web Template Code

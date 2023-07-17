@@ -1,4 +1,4 @@
-package com.ltx.threadpool;
+package com.ltx.threadPool;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
