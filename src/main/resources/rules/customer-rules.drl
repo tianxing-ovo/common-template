@@ -1,0 +1,83 @@
+package rules;
+import com.ltx.drools.entity.*;
+
+rule "customer-rule1"
+when
+    $order:Order();
+    Customer(orderList contains $order)
+then
+    System.out.println("orderList中包含order对象");
+end
+
+rule "customer-rule2"
+when
+    $order:Order();
+    Customer(orderList not contains $order)
+then
+    System.out.println("orderList中不包含order对象");
+end
+
+rule "customer-rule3"
+when
+    $order:Order();
+    Customer($order memberOf orderList)
+then
+    System.out.println("order对象在orderList中");
+end
+
+rule "customer-rule4"
+when
+    $order:Order();
+    Customer($order not memberOf orderList)
+then
+    System.out.println("order对象不在orderList中");
+end
+
+rule "customer-rule5"
+when
+    Customer(name matches "张.*")
+then
+    System.out.println("name是以张开头");
+end
+
+rule "customer-rule6"
+when
+    Customer(name not matches "张.*")
+then
+    System.out.println("name不是以张开头");
+end
+
+rule "customer-rule7"
+when
+    eval(true)
+then
+   Customer customer=new Customer();
+   customer.setName("张三");
+   insert(customer);
+   System.out.println("insert");
+end
+
+rule "customer-rule8"
+when
+    $customer:Customer(name == "李四")
+then
+    $customer.setName("张三");
+    update($customer);
+    System.out.println("update");
+end
+
+rule "customer-rule9"
+when
+    $customer:Customer(name == "李四")
+then
+    retract($customer);
+    System.out.println("retract");
+end
+
+
+rule "customer-rule10"
+when
+    $customer:Customer(name == "张三")
+then
+    System.out.println("insert/update:"+$customer.getName());
+end

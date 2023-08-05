@@ -1,0 +1,34 @@
+package rules;
+import com.ltx.drools.entity.Order;
+
+rule "score-rule1"
+when
+    $order:Order(amount < 100)
+then
+    $order.setScore(0);
+    System.out.println("100元以下不加分");
+end
+
+rule "score-rule2"
+when
+    $order:Order(amount > 100 && amount < 500)
+then
+    $order.setScore(100);
+    System.out.println("100元-500元,加100分");
+end
+
+rule "score-rule3"
+when
+    $order:Order(amount > 500 && amount < 1000)
+then
+    $order.setScore(500);
+    System.out.println("500元-1000元,加500分");
+end
+
+rule "score-rule4"
+when
+    $order:Order(amount > 1000)
+then
+    $order.setScore(1000);
+    System.out.println("1000元以上,加1000分");
+end
