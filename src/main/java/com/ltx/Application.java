@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
  * proxyTargetClass = true -> 使用cglib代理(继承)
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling //启用Spring的任务调度
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) //启用AspectJ自动代理
 @SpringBootApplication
+@EnableRedisHttpSession //使用Redis存储session
 public class Application {
 
     public static void main(String[] args) {

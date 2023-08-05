@@ -38,5 +38,4 @@ public class SessionConfig {
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();
     }
-
 }
