@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.IEnum;
 /**
  * 性别枚举
  * IEnum是mybatis-plus中的接口，用于将Java枚举与数据库中的字段进行映射
+ * SexEnum -> Integer
  */
 public enum SexEnum implements IEnum<Integer> {
 
