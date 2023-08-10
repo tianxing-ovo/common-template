@@ -12,11 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 集中处理所有异常,返回json
+ * 集中处理所有异常,将异常信息返回给前端(json格式)
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.ltx.product.controller")
+@RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * 处理自定义异常
+     */
+    @ExceptionHandler(value = CustomException.class)
+    public R handleAccessDeniedException(CustomException e) {
+        log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
+        return R.error(200, e.getMessage());
+    }
 
     /**
      * 处理数据校验异常
@@ -34,6 +43,7 @@ public class GlobalExceptionHandler {
         log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
         return R.error(200, "方法参数无效", map);
     }
+
 
     /**
      * 处理未知异常

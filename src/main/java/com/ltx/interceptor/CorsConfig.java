@@ -1,4 +1,4 @@
-package com.ltx.web;
+package com.ltx.interceptor;
 
 
 import org.springframework.context.annotation.Bean;

@@ -1,8 +1,14 @@
 package com.ltx.aop;
 
+import com.ltx.annotation.PreAuthorize;
+import com.ltx.exception.CustomException;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * 切面类
@@ -25,6 +31,21 @@ public class UserAop {
     @Before("pointcut()")
     public void before() {
         System.out.println("Before Aop");
+    }
+
+    /**
+     * 拦截带有指定注解的方法
+     */
+    @Before("@annotation(com.ltx.annotation.PreAuthorize)")
+    public void beforeAnnotation(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        String role = (String) args[0];
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        String[] roles = signature.getMethod().getAnnotation(PreAuthorize.class).hasAnyRole();
+        boolean b = Arrays.asList(roles).contains(role);
+        if (!b) {
+            throw new CustomException("Access denied");
+        }
     }
 
     /**

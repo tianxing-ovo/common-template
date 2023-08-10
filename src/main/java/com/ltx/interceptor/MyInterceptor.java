@@ -1,5 +1,6 @@
-package com.ltx.web;
+package com.ltx.interceptor;
 
+import com.ltx.entity.User;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -18,12 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class MyInterceptor implements HandlerInterceptor {
 
+    public static ThreadLocal<User> threadLocal = new ThreadLocal<>(); //保存用户信息
+
     /**
      * 执行时机:Controller处理之前
      * 可以有多个Interceptor，拦截器会按照设定的Order顺序调用，当有一个拦截器在preHandle中返回false，请求就会终止
      */
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
+
         return true;
     }
 
