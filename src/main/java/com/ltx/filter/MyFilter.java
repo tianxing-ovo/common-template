@@ -1,12 +1,14 @@
 package com.ltx.filter;
 
+import javax.servlet.FilterConfig;
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/*")  //匹配所有的URL
+/**
+ * 自定义过滤器
+ */
 public class MyFilter implements Filter {
 
     @Override
