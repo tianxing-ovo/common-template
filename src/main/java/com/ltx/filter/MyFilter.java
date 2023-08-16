@@ -20,14 +20,8 @@ public class MyFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        //在请求到达目标资源之前执行的操作
-        //进行请求的处理、验证、转换等操作
-
-        //将请求传递给下一个过滤器或目标资源
+        //通过
         filterChain.doFilter(request, response);
-
-        //在响应返回给客户端之前执行的操作
-        //可以在这里进行响应的处理、转换等操作
     }
 
     @Override

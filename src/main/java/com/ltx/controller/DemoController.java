@@ -1,6 +1,7 @@
 package com.ltx.controller;
 
 import com.ltx.annotation.PreAuthorize;
+import com.ltx.util.R;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,8 @@ public class DemoController {
      */
     @PreAuthorize(hasAnyRole = "admin")
     @GetMapping("/demo")
-    public String demo(@RequestParam("role") String role) {
+    public R demo(@RequestParam("role") String role) {
         System.out.println(role);
-        return "success";
+        return R.ok("success");
     }
 }

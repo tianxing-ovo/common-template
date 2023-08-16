@@ -27,4 +27,12 @@ public class R {
     public static R error(Integer code, String msg) {
         return new R(code, msg);
     }
+
+    public static R ok(String msg) {
+        return new R(200, msg);
+    }
+
+    public static R ok(String msg, Map<String, Object> map) {
+        return new R(200, msg, map);
+    }
 }
