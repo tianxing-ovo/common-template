@@ -17,6 +17,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession //使用Redis存储session
 public class Application {
     public static void main(String[] args) {
+        System.out.println(1);
         SpringApplication.run(Application.class, args);
     }
 }
