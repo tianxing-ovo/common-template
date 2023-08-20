@@ -1,7 +1,7 @@
 package com.ltx.exception;
 
 
-import com.ltx.util.R;
+import common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
             map.put(field, message);
         });
         log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
-        return R.error(200, "方法参数无效", map);
+        return R.error(202, "方法参数无效",map);
     }
 
 
@@ -51,6 +51,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Throwable.class)
     public R handleException(Throwable throwable) {
         log.error("错误信息:{},异常类型:{}", throwable.getMessage(), throwable.getClass());
-        return R.error(201, "未知异常");
+        return R.error(203, "未知异常");
     }
 }
