@@ -91,6 +91,7 @@ public class DemoController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         //附件,默认名称
         headers.setContentDispositionFormData("attachment", fileName);
+        //直接流式传输
         InputStreamResource resource = new InputStreamResource(new FileInputStream(basePath + fileName));
         return ResponseEntity.ok().headers(headers).body(resource);
     }

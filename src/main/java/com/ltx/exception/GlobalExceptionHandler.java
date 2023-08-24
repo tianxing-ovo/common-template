@@ -2,6 +2,7 @@ package com.ltx.exception;
 
 
 import common.R;
+import exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = CustomException.class)
     public R handleAccessDeniedException(CustomException e) {
         log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
-        return R.error(200, e.getMessage());
+        return R.error(e.getCode(), e.getMessage());
     }
 
     /**
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler {
             map.put(field, message);
         });
         log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
-        return R.error(202, "方法参数无效",map);
+        return R.error(202, "方法参数无效", map);
     }
 
 

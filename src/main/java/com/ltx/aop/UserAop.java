@@ -1,7 +1,8 @@
 package com.ltx.aop;
 
 import com.ltx.annotation.PreAuthorize;
-import com.ltx.exception.CustomException;
+import enums.ErrorCode;
+import exceptions.CustomException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -44,7 +45,7 @@ public class UserAop {
         String[] roles = signature.getMethod().getAnnotation(PreAuthorize.class).hasAnyRole();
         boolean b = Arrays.asList(roles).contains(role);
         if (!b) {
-            throw new CustomException("Access denied");
+            throw new CustomException(ErrorCode.UNAUTHORIZED.getCode(), ErrorCode.UNAUTHORIZED.getMessage());
         }
     }
 
