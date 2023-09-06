@@ -10,10 +10,12 @@ import java.io.IOException;
  * 自定义过滤器
  */
 public class MyFilter implements Filter {
-
+    /**
+     * 初始化过滤器
+     */
     @Override
     public void init(FilterConfig filterConfig) {
-        //初始化过滤器
+
     }
 
     @Override
@@ -24,8 +26,11 @@ public class MyFilter implements Filter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 销毁过滤器
+     */
     @Override
     public void destroy() {
-        //销毁过滤器
+
     }
 }

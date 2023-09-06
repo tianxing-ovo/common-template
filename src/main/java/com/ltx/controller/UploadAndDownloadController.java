@@ -1,6 +1,5 @@
 package com.ltx.controller;
 
-import com.ltx.annotation.PreAuthorize;
 import common.R;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -17,21 +16,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 上传和下载
+ */
 @RestController
 @Slf4j
-public class DemoController {
-
+public class UploadAndDownloadController {
     public static final String basePath = "C:/Users/李天行/Desktop/";
-
-    /**
-     * 实现自定义权限控制
-     */
-    @PreAuthorize(hasAnyRole = "admin")
-    @GetMapping("/demo")
-    public R demo(@RequestParam("role") String role) {
-        System.out.println(role);
-        return R.ok("success");
-    }
 
     /**
      * 单个文件上传
@@ -87,11 +78,11 @@ public class DemoController {
     @GetMapping("/{fileName}")
     public ResponseEntity<InputStreamResource> download(@PathVariable String fileName) {
         HttpHeaders headers = new HttpHeaders();
-        //"application/octet-stream"
+        // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        //附件,默认名称
+        // 附件,默认名称
         headers.setContentDispositionFormData("attachment", fileName);
-        //直接流式传输
+        // 直接流式传输
         InputStreamResource resource = new InputStreamResource(new FileInputStream(basePath + fileName));
         return ResponseEntity.ok().headers(headers).body(resource);
     }
