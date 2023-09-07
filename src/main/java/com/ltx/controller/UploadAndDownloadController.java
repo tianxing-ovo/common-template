@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class UploadAndDownloadController {
      * filename:默认的下载文件名
      */
     @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<?> download(@PathVariable String fileName) {
+    public ResponseEntity<?> download(@PathVariable String fileName) throws UnsupportedEncodingException {
         Path path = Paths.get(basePath).resolve(fileName);
         Resource resource;
         try {
@@ -89,6 +91,7 @@ public class UploadAndDownloadController {
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        fileName = URLEncoder.encode(fileName, "UTF-8");
         // 附件,默认名称
         headers.setContentDispositionFormData("attachment", fileName);
         return ResponseEntity.ok().headers(headers).body(resource);
