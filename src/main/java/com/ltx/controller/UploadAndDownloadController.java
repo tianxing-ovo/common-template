@@ -77,13 +77,14 @@ public class UploadAndDownloadController {
      * filename:默认的下载文件名
      */
     @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> download(@PathVariable String fileName) {
+    public ResponseEntity<?> download(@PathVariable String fileName) {
         Path path = Paths.get(basePath).resolve(fileName);
-        Resource resource = null;
+        Resource resource;
         try {
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             log.error("格式不正确");
+            return ResponseEntity.badRequest().body("格式不正确");
         }
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
