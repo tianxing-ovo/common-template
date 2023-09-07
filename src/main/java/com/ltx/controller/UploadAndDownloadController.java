@@ -1,9 +1,9 @@
 package com.ltx.controller;
 
 import common.R;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,16 +76,20 @@ public class UploadAndDownloadController {
      * attachment:将响应体视为附件
      * filename:默认的下载文件名
      */
-    @SneakyThrows
-    @GetMapping("/{fileName}")
-    public ResponseEntity<InputStreamResource> download(@PathVariable String fileName) {
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity<Resource> download(@PathVariable String fileName) {
+        Path path = Paths.get(basePath).resolve(fileName);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            log.error("格式不正确");
+        }
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         // 附件,默认名称
         headers.setContentDispositionFormData("attachment", fileName);
-        // 直接流式传输
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(basePath + fileName));
         return ResponseEntity.ok().headers(headers).body(resource);
     }
 }
