@@ -79,4 +79,33 @@ public class ImportAndExportController {
         }
         return R.ok("导入成功").put("userList", userListener.getUserList());
     }
+    /**
+     * 使用easyExcel库导出
+     */
+    @GetMapping("/export/{fileName}")
+    public void exportExample(HttpServletResponse response, @PathVariable("fileName") String fileName)
+        throws IOException {
+        response.setContentType("text/csv");
+        response.setCharacterEncoding("utf-8");
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+        //设置头居中
+        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        //内容策略
+        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+        //设置 水平居中
+        contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle,
+            contentWriteCellStyle);
+        // 构造导出数据
+        List<User> userList = new ArrayList<>();
+        userList.add(new User(1, "张三", 18));
+        userList.add(new User(2, "李四", 19));
+        userList.add(new User(3, "王五", 20));
+        EasyExcel.write(response.getOutputStream(), User.class)
+            .registerWriteHandler(horizontalCellStyleStrategy)
+            .sheet(0, "学生表1")
+            .doWrite(userList);
+    }
 }
