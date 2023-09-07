@@ -17,9 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 导入和导出
@@ -27,6 +28,12 @@ import java.util.List;
 @RestController
 @Slf4j
 public class ImportAndExportController {
+
+    private final List<User> userList = Arrays.asList(
+            new User(1, "张三", "123456"),
+            new User(2, "李四", "654321"),
+            new User(3, "王五", "987654")
+    );
 
     /**
      * 使用poi库导入
@@ -85,12 +92,10 @@ public class ImportAndExportController {
      * 使用easyExcel库导出
      */
     @GetMapping("/exportByEasyExcel/{fileName}")
-    public void exportExample(HttpServletResponse response, @PathVariable("fileName") String fileName) throws IOException {
-        // 构造导出数据
-        List<User> userList = new ArrayList<>();
-        userList.add(new User(1, "张三", "123"));
-        userList.add(new User(2, "李四", "1242"));
-        userList.add(new User(3, "王五", "242"));
+    public void exportExample(HttpServletResponse response, @PathVariable("fileName") String fileName
+            , @RequestParam(value = "fields", required = false) List<String> fields) throws IOException {
+        // 过滤
+        List<Map<String, Object>> list = userList.stream().map(user -> filterUserFields(user, fields)).collect(Collectors.toList());
         response.setContentType("text/csv");
         response.setCharacterEncoding("utf-8");
         fileName = URLEncoder.encode(fileName, "UTF-8");
@@ -98,6 +103,24 @@ public class ImportAndExportController {
         EasyExcel.write(response.getOutputStream(), User.class)
                 .registerWriteHandler(StyleConfig.getStyleStrategy())
                 .sheet(0, "学生表1")
-                .doWrite(userList);
+                .doWrite(list);
+    }
+
+    /**
+     * 根据字段参数过滤用户对象的字段
+     */
+    private Map<String, Object> filterUserFields(User user, List<String> fields) {
+        HashMap<String, Object> map = new HashMap<>();
+        for (Field field : user.getClass().getDeclaredFields()) {
+            if (fields.contains(field.getName())) {
+                field.setAccessible(true);
+                try {
+                    map.put(field.getName(), field.get(user));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
     }
 }
