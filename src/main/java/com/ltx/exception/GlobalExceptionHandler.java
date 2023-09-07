@@ -49,9 +49,9 @@ public class GlobalExceptionHandler {
     /**
      * 处理未知异常
      */
-    @ExceptionHandler(value = Throwable.class)
-    public R handleException(Throwable throwable) {
-        log.error("错误信息:{},异常类型:{}", throwable.getMessage(), throwable.getClass());
-        return R.error(203, "未知异常");
+    @ExceptionHandler(value = Exception.class)
+    public R handleException(Exception e) {
+        log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
+        return R.error(203, e.getMessage());
     }
 }
