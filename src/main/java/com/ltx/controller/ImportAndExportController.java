@@ -52,10 +52,12 @@ public class ImportAndExportController {
         DataFormatter dataFormatter = new DataFormatter(); // 数据格式化
         try {
             InputStream inputStream = file.getInputStream();
-            Workbook workbook = new XSSFWorkbook(inputStream); // .xlsx
-            // workbook.getNumberOfSheets()获取总页数
-            Sheet sheet = workbook.getSheetAt(0); // 获取第一页
-            int lastRowNum = sheet.getLastRowNum(); // 最后一行
+            // 获取工作簿
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            // 获取第一个工作表
+            Sheet sheet = workbook.getSheetAt(0);
+            // 最后一行
+            int lastRowNum = sheet.getLastRowNum();
             // 跳过第一行(表头),rowNum=0
             for (int i = 1; i <= lastRowNum; i++) {
                 Row row = sheet.getRow(i);
@@ -94,21 +96,40 @@ public class ImportAndExportController {
     }
 
     /**
-     * 使用easyExcel库,导出CSV文件
+     * 使用POI库,导出CSV文件
      */
-    @GetMapping("/exportByEasyExcel")
-    public void exportExample(HttpServletResponse response, ExportRequestDTO requestDTO) throws IOException {
+    @GetMapping("/exportByPOI")
+    public void exportByPOI(HttpServletResponse response, ExportRequestDTO requestDTO) throws IOException {
         String fileName = requestDTO.getFileName();
         List<String> fields = requestDTO.getFields();
         response.setContentType("text/csv");
         response.setCharacterEncoding("utf-8");
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-        EasyExcel.write(response.getOutputStream(), User.class)
-                .registerWriteHandler(StyleConfig.getStyleStrategy())
-                .excelType(ExcelTypeEnum.CSV)
-                .includeColumnFieldNames(fields) // 动态表头
-                .sheet()
-                .doWrite(userList);
+
+    }
+
+    /**
+     * 使用easyExcel库,导出CSV文件
+     */
+    @GetMapping("/exportByEasyExcel")
+    public void exportByEasyExcel(HttpServletResponse response, ExportRequestDTO requestDTO) {
+        String fileName = requestDTO.getFileName();
+        List<String> fields = requestDTO.getFields();
+        try {
+            response.setContentType("text/csv;charset=UTF-8");
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            EasyExcel.write(response.getOutputStream(), User.class)
+                    .registerWriteHandler(StyleConfig.getStyleStrategy())
+                    .excelType(ExcelTypeEnum.CSV)
+                    .includeColumnFieldNames(fields) // 动态表头
+                    .sheet()
+                    .doWrite(userList);
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 }
