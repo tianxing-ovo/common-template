@@ -1,7 +1,9 @@
 package com.ltx.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.ltx.config.StyleConfig;
+import com.ltx.entity.ExportRequestDTO;
 import com.ltx.entity.User;
 import com.ltx.listener.UserListener;
 import common.R;
@@ -11,16 +13,19 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.URLEncoder;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 导入和导出
@@ -42,7 +47,7 @@ public class ImportAndExportController {
      * SXSSFWorkbook/DeferredSXSSFWorkbook -> 大型.xlsx
      */
     @PostMapping("/importByPOI")
-    public R importByPOI(@RequestParam("file") MultipartFile file) {
+    public R importByPOI(@RequestPart("file") MultipartFile file) {
         List<User> UserList = new ArrayList<>();
         DataFormatter dataFormatter = new DataFormatter(); // 数据格式化
         try {
@@ -75,7 +80,7 @@ public class ImportAndExportController {
      * 使用easyExcel库导入
      */
     @PostMapping("/importByEasyExcel")
-    public R importByEasyExcel(@RequestParam("file") MultipartFile file) {
+    public R importByEasyExcel(@RequestPart("file") MultipartFile file) {
         UserListener userListener = new UserListener();
         try {
             InputStream inputStream = file.getInputStream();
@@ -89,38 +94,21 @@ public class ImportAndExportController {
     }
 
     /**
-     * 使用easyExcel库导出
+     * 使用easyExcel库,导出CSV文件
      */
-    @GetMapping("/exportByEasyExcel/{fileName}")
-    public void exportExample(HttpServletResponse response, @PathVariable("fileName") String fileName
-            , @RequestParam(value = "fields", required = false) List<String> fields) throws IOException {
-        // 过滤
-        List<Map<String, Object>> list = userList.stream().map(user -> filterUserFields(user, fields)).collect(Collectors.toList());
+    @GetMapping("/exportByEasyExcel")
+    public void exportExample(HttpServletResponse response, ExportRequestDTO requestDTO) throws IOException {
+        String fileName = requestDTO.getFileName();
+        List<String> fields = requestDTO.getFields();
         response.setContentType("text/csv");
         response.setCharacterEncoding("utf-8");
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         EasyExcel.write(response.getOutputStream(), User.class)
                 .registerWriteHandler(StyleConfig.getStyleStrategy())
-                .sheet(0, "学生表1")
-                .doWrite(list);
-    }
-
-    /**
-     * 根据字段参数过滤用户对象的字段
-     */
-    private Map<String, Object> filterUserFields(User user, List<String> fields) {
-        HashMap<String, Object> map = new HashMap<>();
-        for (Field field : user.getClass().getDeclaredFields()) {
-            if (fields.contains(field.getName())) {
-                field.setAccessible(true);
-                try {
-                    map.put(field.getName(), field.get(user));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return map;
+                .excelType(ExcelTypeEnum.CSV)
+                .includeColumnFieldNames(fields) // 动态表头
+                .sheet()
+                .doWrite(userList);
     }
 }
