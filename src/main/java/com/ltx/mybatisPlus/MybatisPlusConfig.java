@@ -21,7 +21,7 @@ public class MybatisPlusConfig {
         //请求页大于最后页，true回到首页，false继续请求，默认为false
         interceptor.setOverflow(true);
         //设置单页最大数量
-        interceptor.setMaxLimit(500L);
+        interceptor.setMaxLimit(10000L);
         mybatisPlusInterceptor.addInnerInterceptor(interceptor);
         return mybatisPlusInterceptor;
     }
