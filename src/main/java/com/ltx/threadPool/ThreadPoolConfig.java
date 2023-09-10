@@ -21,8 +21,8 @@ public class ThreadPoolConfig {
                 threadPoolConfigProperties.maximumPoolSize,
                 threadPoolConfigProperties.keepAliveTime,
                 threadPoolConfigProperties.unit,
-                new LinkedBlockingQueue<>(100000), //存储待执行任务的阻塞队列
-                Executors.defaultThreadFactory(), //创建新线程的工厂
-                new ThreadPoolExecutor.AbortPolicy()); //拒绝策略
+                new LinkedBlockingQueue<>(100000), // 存储待执行任务的阻塞队列
+                Executors.defaultThreadFactory(), // 创建新线程的工厂
+                new ThreadPoolExecutor.AbortPolicy()); // 拒绝策略
     }
 }

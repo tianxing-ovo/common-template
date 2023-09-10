@@ -20,6 +20,9 @@ import java.util.List;
 public class ImportService {
     /**
      * 使用poi库导入
+     * HSSFWorkbook -> .xls
+     * XSSFWorkbook -> .xlsx
+     * SXSSFWorkbook/DeferredSXSSFWorkbook -> 大型.xlsx
      */
     public List<User> importByPOI(MultipartFile file) throws IOException {
         List<User> UserList = new ArrayList<>();
@@ -47,6 +50,9 @@ public class ImportService {
         return UserList;
     }
 
+    /**
+     * 使用easyExcel库导入
+     */
     public List<User> importByEasyExcel(MultipartFile file) throws IOException {
         UserListener userListener = new UserListener();
         InputStream inputStream = file.getInputStream();

@@ -1,10 +1,13 @@
 package com.ltx.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ltx.dao.UserDao;
 import com.ltx.easyExcel.service.ExportService;
 import com.ltx.easyExcel.service.ImportService;
 import com.ltx.entity.ExportRequestDTO;
 import com.ltx.entity.User;
 import common.R;
+import exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -30,14 +31,17 @@ public class ImportAndExportController {
     ExportService exportService;
 
     @Resource
+    UserDao userDao;
+
+    @Resource
     ImportService importService;
+
+    @Resource
+    ObjectMapper om;
 
 
     /**
-     * 使用poi库导入
-     * HSSFWorkbook -> .xls
-     * XSSFWorkbook -> .xlsx
-     * SXSSFWorkbook/DeferredSXSSFWorkbook -> 大型.xlsx
+     * 使用poi库,导入xlsx文件
      */
     @PostMapping("/importByPOI")
     public R importByPOI(@RequestPart("file") MultipartFile file) {
@@ -67,23 +71,16 @@ public class ImportAndExportController {
     }
 
     /**
-     * 使用POI库,导出CSV文件
-     */
-    @GetMapping("/exportByPOI")
-    public void exportByPOI(HttpServletResponse response, ExportRequestDTO requestDTO) throws UnsupportedEncodingException {
-        String fileName = requestDTO.getFileName();
-        List<String> fields = requestDTO.getFields();
-        response.setContentType("text/csv;charset=UTF-8");
-        fileName = URLEncoder.encode(fileName, "UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-
-    }
-
-    /**
      * 使用easyExcel库,导出CSV文件
      */
     @GetMapping("/exportByEasyExcel")
     public void exportByEasyExcel(HttpServletResponse response, ExportRequestDTO requestDTO) {
-        exportService.exportByEasyExcel(response, requestDTO);
+        List<User> list = userDao.selectList(null);
+        try {
+            exportService.exportByEasyExcel(response, list, requestDTO, User.class);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new CustomException(500, e.getMessage());
+        }
     }
 }
