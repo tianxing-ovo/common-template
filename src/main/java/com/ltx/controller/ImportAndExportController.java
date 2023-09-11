@@ -39,8 +39,7 @@ public class ImportAndExportController {
      */
     @PostMapping("/importByPOI")
     public R importByPOI(@RequestPart("file") MultipartFile file) {
-        List<User> userList;
-        userList = importService.importByPOI(file);
+        List<User> userList = importService.importByPOI(file);
         return R.ok("导入成功").put("userList", userList);
     }
 
@@ -49,8 +48,7 @@ public class ImportAndExportController {
      */
     @PostMapping("/importByEasyExcel")
     public R importByEasyExcel(@RequestPart("file") MultipartFile file) {
-        List<User> userList;
-        userList = importService.importByEasyExcel(file);
+        List<User> userList = importService.importByEasyExcel(file);
         return R.ok("导入成功").put("userList", userList);
     }
 
