@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 import com.ltx.entity.ExportRequestDTO;
+import exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,19 @@ public class ExportService {
     /**
      * 使用easyExcel库,导出CSV文件
      */
-    public <T> void exportByEasyExcel(HttpServletResponse response, List<T> list, ExportRequestDTO requestDTO, Class<T> clazz) throws IOException {
+    public <T> void exportByEasyExcel(HttpServletResponse response, List<T> list, ExportRequestDTO requestDTO,
+                                      Class<T> clazz) {
         String fileName = requestDTO.getFileName();
         List<String> fields = requestDTO.getFields();
         response.setContentType("text/csv;charset=UTF-8");
-        fileName = URLEncoder.encode(fileName, "UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-        EasyExcel.write(response.getOutputStream(), clazz).excelType(ExcelTypeEnum.CSV).includeColumnFieldNames(fields).registerWriteHandler(styleStrategy).sheet().doWrite(list);
+        try {
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            EasyExcel.write(response.getOutputStream(), clazz).excelType(ExcelTypeEnum.CSV).includeColumnFieldNames(fields).registerWriteHandler(styleStrategy).sheet().doWrite(list);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new CustomException(500, e.getMessage());
+        }
     }
 }
 
