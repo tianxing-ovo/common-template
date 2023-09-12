@@ -21,6 +21,31 @@ public enum SexEnum implements IEnum<Integer> {
         this.desc = desc;
     }
 
+    /**
+     * 根据value获取desc
+     */
+    public static String getDescByValue(int value) {
+        for (SexEnum sexEnum : SexEnum.values()) {
+            if (sexEnum.value == value) {
+                return sexEnum.toString();
+            }
+        }
+        return UNKNOWN.toString();
+    }
+
+    /**
+     * 根据desc获取SexEnum
+     */
+    public static SexEnum getEnumByDesc(String desc) {
+        for (SexEnum sexEnum : SexEnum.values()) {
+            if (sexEnum.toString().equals(desc)) {
+                return sexEnum;
+            }
+        }
+        return UNKNOWN;
+    }
+
+
     @Override
     public Integer getValue() {
         return value;

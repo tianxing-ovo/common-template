@@ -1,6 +1,5 @@
 package com.ltx.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ltx.dao.UserDao;
 import com.ltx.easyExcel.service.ExportService;
 import com.ltx.easyExcel.service.ImportService;
@@ -58,8 +57,7 @@ public class ImportAndExportController {
      */
     @GetMapping("/exportByEasyExcel")
     public void exportByEasyExcel(HttpServletResponse response, ExportRequestDTO requestDTO) {
-        Page<User> page = new Page<>(1, 1000);
-        List<User> list = userDao.selectPage(page, null).getRecords();
+        List<User> list = userDao.select();
         exportService.exportByEasyExcel(response, list, requestDTO, User.class);
     }
 }

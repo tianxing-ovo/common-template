@@ -45,7 +45,7 @@ public class ImportService {
                     User user = new User();
                     user.setId((int) row.getCell(0).getNumericCellValue());
                     user.setName(row.getCell(1).getStringCellValue());
-                    user.setPassword(dataFormatter.formatCellValue(row.getCell(2))); // 数字 -> 字符串
+                    //user.setPassword(dataFormatter.formatCellValue(row.getCell(2))); // 数字 -> 字符串
                     UserList.add(user);
                 }
             }

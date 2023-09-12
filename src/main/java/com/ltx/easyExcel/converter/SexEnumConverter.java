@@ -1,4 +1,4 @@
-package com.ltx.easyExcel;
+package com.ltx.easyExcel.converter;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
@@ -22,27 +22,21 @@ public class SexEnumConverter implements Converter<SexEnum> {
         return CellDataTypeEnum.STRING;
     }
 
+    /**
+     * 转换为Java数据
+     */
     @Override
     public SexEnum convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         String desc = String.valueOf(cellData.getData());
-        if (desc.equals("男")) {
-            return SexEnum.MAN;
-        } else if (desc.equals("女")) {
-            return SexEnum.WOMAN;
-        } else {
-            return SexEnum.UNKNOWN;
-        }
+        return SexEnum.getEnumByDesc(desc);
     }
 
+    /**
+     * 转换为Excel数据
+     */
     @Override
-    public WriteCellData<?> convertToExcelData(SexEnum value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
-        int sex = value.getValue();
-        if (sex == 1) {
-            return new WriteCellData<>("男");
-        } else if (sex == 2) {
-            return new WriteCellData<>("女");
-        } else {
-            return new WriteCellData<>("未知");
-        }
+    public WriteCellData<?> convertToExcelData(SexEnum sexEnum, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
+        int value = sexEnum.getValue();
+        return new WriteCellData<>(SexEnum.getDescByValue(value));
     }
 }

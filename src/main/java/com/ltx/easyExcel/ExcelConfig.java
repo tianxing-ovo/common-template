@@ -25,14 +25,14 @@ import java.util.List;
  * 示例用途: 设置行的样式/合并单元格/动态调整行高
  * <p>
  * SheetWriteHandler:
- * 作用范围：工作表级别
- * 主要功能：自定义整个工作表的样式和内容
- * 示例用途：设置工作表的名称/设置工作表的冻结窗格/添加工作表级别的数据校验
+ * 作用范围: 工作表级别
+ * 主要功能: 自定义整个工作表的样式和内容
+ * 示例用途: 设置工作表的名称/设置工作表的冻结窗格/添加工作表级别的数据校验
  * <p>
  * WorkbookWriteHandler:
- * 作用范围：工作簿级别
- * 主要功能：自定义整个工作簿的样式和内容
- * 示例用途：设置工作簿级别的样式/添加自定义的元数据信息/设置全局的数据格式
+ * 作用范围: 工作簿级别
+ * 主要功能: 自定义整个工作簿的样式和内容
+ * 示例用途: 设置工作簿级别的样式/添加自定义的元数据信息/设置全局的数据格式
  */
 public class ExcelConfig {
 
@@ -49,18 +49,16 @@ public class ExcelConfig {
         return new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
     }
 
+    /**
+     * 处理null/空字符串
+     */
     public static CellWriteHandler getCellWriteHandler() {
         return new CellWriteHandler() {
             @Override
             public void afterCellDispose(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder, List<WriteCellData<?>> cellDataList, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
-                /* 判断是否有进行填充数据的操作 */
-                if (!isHead) {
-                    CellType cellType = cell.getCellType();
-                    if (cellType == CellType.STRING && cell.getStringCellValue().equals("")) {
-                        cell.setCellValue("--");
-                    } else if (cellType == CellType._NONE) {
-                        cell.setCellValue("--");
-                    }
+                CellType cellType = cell.getCellType();
+                if (cellType == CellType._NONE || (cellType == CellType.STRING && cell.getStringCellValue().equals(""))) {
+                    cell.setCellValue("--");
                 }
             }
         };
