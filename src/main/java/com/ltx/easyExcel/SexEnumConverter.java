@@ -9,7 +9,7 @@ import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.ltx.mybatisPlus.SexEnum;
 
 /**
- * 自定义转换器
+ * 性别枚举转换器
  */
 public class SexEnumConverter implements Converter<SexEnum> {
     @Override
@@ -45,5 +45,4 @@ public class SexEnumConverter implements Converter<SexEnum> {
             return new WriteCellData<>("未知");
         }
     }
-
 }
