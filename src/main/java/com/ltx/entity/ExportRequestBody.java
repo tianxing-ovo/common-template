@@ -5,10 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 封装Get请求参数
+ * 导出csv文件请求体
  */
 @Data
-public class ExportRequestDTO {
+public class ExportRequestBody {
     private String fileName;
+    // 需要导出的字段
     private List<String> fields;
 }

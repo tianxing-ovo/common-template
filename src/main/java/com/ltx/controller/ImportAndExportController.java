@@ -3,12 +3,12 @@ package com.ltx.controller;
 import com.ltx.dao.UserDao;
 import com.ltx.easyExcel.service.ExportService;
 import com.ltx.easyExcel.service.ImportService;
-import com.ltx.entity.ExportRequestDTO;
+import com.ltx.entity.ExportRequestBody;
 import com.ltx.entity.User;
 import common.R;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +33,6 @@ public class ImportAndExportController {
     @Resource
     ImportService importService;
 
-
     /**
      * 使用poi库,导入xlsx文件
      */
@@ -55,9 +54,9 @@ public class ImportAndExportController {
     /**
      * 使用easyExcel库,导出CSV文件
      */
-    @GetMapping("/exportByEasyExcel")
-    public void exportByEasyExcel(HttpServletResponse response, ExportRequestDTO requestDTO) {
+    @PostMapping("/exportByEasyExcel")
+    public void exportByEasyExcel(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
         List<User> list = userDao.select();
-        exportService.exportByEasyExcel(response, list, requestDTO, User.class);
+        exportService.exportByEasyExcel(response, list, requestBody,User.class);
     }
 }
