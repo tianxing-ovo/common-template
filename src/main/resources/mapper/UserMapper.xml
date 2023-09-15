@@ -9,6 +9,26 @@
     </resultMap>
 
 
+    <select id="query" resultMap="userMap">
+        select * from user
+        <where>
+            <if test="id != null and id != ''">
+                and id &gt;= #{id}
+            </if>
+            <if test="age != null and age != ''">
+                and age &lt;= #{id}
+            </if>
+            <choose>
+                <when test="name != null">
+                    and name = #{name}
+                </when>
+                <otherwise>
+                    and sex = #{sex}
+                </otherwise>
+            </choose>
+        </where>
+        limit 10 offset 0
+    </select>
     <select id="select" resultMap="userMap">
         select *
         from user

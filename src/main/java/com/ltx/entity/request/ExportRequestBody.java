@@ -1,4 +1,4 @@
-package com.ltx.entity;
+package com.ltx.entity.request;
 
 import lombok.Data;
 

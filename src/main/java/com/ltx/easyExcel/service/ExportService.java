@@ -4,7 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ltx.easyExcel.ExcelConfig;
-import com.ltx.entity.ExportRequestBody;
+import com.ltx.entity.request.ExportRequestBody;
 import exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
