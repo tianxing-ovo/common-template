@@ -2,6 +2,7 @@ package com.ltx.entity.request;
 
 import com.ltx.mybatisPlus.SexEnum;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * 查询用户请求体
  */
 @Data
+@Accessors(chain = true)
 public class UserRequestBody {
 
     private Integer id;

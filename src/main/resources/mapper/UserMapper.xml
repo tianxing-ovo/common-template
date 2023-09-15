@@ -13,7 +13,7 @@
         select * from user
         <where>
             <if test="id != null and id != ''">
-                and id &gt;= #{id}
+                and id >= #{id}
             </if>
             <if test="age != null and age != ''">
                 and age &lt;= #{id}
