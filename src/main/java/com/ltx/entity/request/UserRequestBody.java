@@ -1,9 +1,11 @@
 package com.ltx.entity.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ltx.mybatisPlus.SexEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -30,4 +32,10 @@ public class UserRequestBody {
     private String city;
 
     private String description;
+
+    @JsonProperty("start_date")
+    private Date startDate;
+
+    @JsonProperty("end_date")
+    private Date endDate;
 }

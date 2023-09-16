@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -42,4 +43,6 @@ public class User {
 
     @ExcelProperty(value = "描述")
     private String description;
+
+    private Timestamp datetime;
 }

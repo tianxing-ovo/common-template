@@ -11,22 +11,22 @@
 
     <select id="query" resultMap="userMap">
         select * from user
-        <where>
-            <if test="id != null and id != ''">
-                and id >= #{id}
-            </if>
-            <if test="age != null and age != ''">
-                and age &lt;= #{id}
-            </if>
-            <choose>
-                <when test="name != null">
-                    and name = #{name}
-                </when>
-                <otherwise>
-                    and sex = #{sex}
-                </otherwise>
-            </choose>
-        </where>
+        where my_date >= #{startDate} and date(my_datetime)>= #{startDate}
+        and my_date&lt;=#{endDate}
+        <if test="id != null and id != ''">
+            and id >= #{id}
+        </if>
+        <if test="age != null and age != ''">
+            and age &lt;= #{id}
+        </if>
+        <choose>
+            <when test="name != null">
+                and name = #{name}
+            </when>
+            <otherwise>
+                and sex = #{sex}
+            </otherwise>
+        </choose>
         limit 10 offset 0
     </select>
     <select id="select" resultMap="userMap">
