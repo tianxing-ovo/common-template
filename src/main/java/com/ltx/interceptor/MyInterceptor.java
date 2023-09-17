@@ -1,25 +1,21 @@
 package com.ltx.interceptor;
 
 import com.ltx.entity.User;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 请求拦截器
+ * 自定义拦截器
  */
 @Component
 public class MyInterceptor implements HandlerInterceptor {
 
-    public static ThreadLocal<User> threadLocal = new ThreadLocal<>(); //保存用户信息
+    public static ThreadLocal<User> threadLocal = new ThreadLocal<>(); // 保存用户信息
 
     /**
      * 执行时机:Controller处理之前
@@ -45,30 +41,5 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) {
 
-    }
-
-    @Configuration
-    static class MvcConfig implements WebMvcConfigurer {
-        /**
-         * 添加拦截器
-         * addPathPatterns:拦截路径
-         * excludePathPatterns:不拦截路径
-         */
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(new MyInterceptor())
-                    .addPathPatterns("/**").
-                    excludePathPatterns("/login");
-        }
-
-        /**
-         * 配置请求与页面映射关系
-         * 路径->页面
-         */
-        @Override
-        public void addViewControllers(ViewControllerRegistry registry) {
-            registry.addViewController("/login.html").setViewName("login");
-            registry.addViewController("/reg.html").setViewName("reg");
-        }
     }
 }
