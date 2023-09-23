@@ -14,33 +14,34 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 /**
  * 缓存配置
  */
-@EnableConfigurationProperties(CacheProperties.class)//使绑定属性配置文件生效
+@EnableConfigurationProperties(CacheProperties.class) // 注册外部配置类
 @Configuration
-@EnableCaching  //开启缓存
+@EnableCaching  // 开启缓存
 public class CacheConfig {
 
     @Bean
     public RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties) {
-        //获取默认配置
+        // 获取默认配置
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-        //指定key的序列化方式为String,链式调用
+        // 指定key的序列化方式为String,链式调用
         config = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
-        //指定value的序列化方式为json,链式调用,GenericJackson2JsonRedisSerializer是通用的json序列化器
+        // 指定value的序列化方式为json,链式调用,GenericJackson2JsonRedisSerializer是通用的json序列化器
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
         CacheProperties.Redis redisProperties = cacheProperties.getRedis();
 
         if (redisProperties.getTimeToLive() != null) {
-            config = config.entryTtl(redisProperties.getTimeToLive()); //缓存过期时间
+            config = config.entryTtl(redisProperties.getTimeToLive()); // 缓存过期时间
         }
         if (redisProperties.getKeyPrefix() != null) {
-            config = config.computePrefixWith((cacheName) -> redisProperties.getKeyPrefix() + cacheName + ":"); //键前缀
+            // 键前缀
+            config = config.computePrefixWith((cacheName) -> redisProperties.getKeyPrefix() + cacheName + ":");
         }
         if (!redisProperties.isCacheNullValues()) {
-            config = config.disableCachingNullValues(); //禁用缓存空值
+            config = config.disableCachingNullValues(); // 禁用缓存空值
         }
         if (!redisProperties.isUseKeyPrefix()) {
-            config = config.disableKeyPrefix(); //禁用键前缀
+            config = config.disableKeyPrefix(); // 禁用键前缀
         }
         return config;
     }

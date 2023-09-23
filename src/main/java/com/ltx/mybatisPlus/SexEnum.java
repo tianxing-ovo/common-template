@@ -2,24 +2,22 @@ package com.ltx.mybatisPlus;
 
 
 import com.baomidou.mybatisplus.annotation.IEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
 
 /**
  * 性别枚举
- * IEnum是mybatis-plus中的接口,Java枚举 -> 数据库中的字段
+ * IEnum是mybatis-plus中的接口,value -> 数据库中的字段
  * SexEnum -> Integer
  */
+@AllArgsConstructor
 public enum SexEnum implements IEnum<Integer> {
-
     MAN(1, "男"),
     WOMAN(2, "女"),
     UNKNOWN(3, "未知");
     private final int value;
+    @JsonValue
     private final String desc;
-
-    SexEnum(int value, String desc) {
-        this.value = value;
-        this.desc = desc;
-    }
 
     /**
      * 根据value获取desc
