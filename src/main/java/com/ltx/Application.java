@@ -11,10 +11,10 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * proxyTargetClass = false -> 使用jdk代理(实现接口)
  * exposeProxy = true -> 公开代理 -> 使用AopContext.currentProxy()获取代理对象
  */
-@EnableScheduling //启用Spring的任务调度
-@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) //启用AspectJ自动代理
-@SpringBootApplication
-@EnableRedisHttpSession //使用Redis存储session
+@EnableScheduling // 启用Spring的任务调度
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) // 启用AspectJ自动代理
+@SpringBootApplication(scanBasePackages = "redis")
+@EnableRedisHttpSession // 使用Redis存储session
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
