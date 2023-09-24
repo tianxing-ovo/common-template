@@ -5,8 +5,18 @@
     <!--json对应List-->
     <resultMap id="userMap" type="com.ltx.entity.User">
         <result column="password" property="password"
+                jdbcType="OTHER"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
+    <insert id="add">
+        insert into user (id, name, age, password, sex, province, address, city, description, my_datetime, my_date)
+        values (#{user.id}, #{user.name}, #{user.age},
+        json_array(
+        <foreach collection="user.password" item="password" separator=",">
+            #{password}
+        </foreach>), #{user.sex}, #{user.province},
+        #{user.address}, #{user.city}, #{user.description}, #{user.datetime}, #{user.date})
+    </insert>
 
 
     <select id="query" resultMap="userMap">
@@ -34,5 +44,9 @@
         from user
         limit 10 offset 0
     </select>
-
+    <select id="queryGroupBy" resultType="com.ltx.entity.SexCount">
+        select ${groupField} as field, count(*) as count
+        from user
+        group by ${groupField}
+    </select>
 </mapper>

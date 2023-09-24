@@ -1,4 +1,4 @@
-package com.ltx.redis;
+package com.ltx.cache;
 
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,7 +16,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @EnableConfigurationProperties(CacheProperties.class) // 注册外部配置类
 @Configuration
-@EnableCaching  // 开启缓存
+@EnableCaching  // 开启缓存注解功能
 public class CacheConfig {
 
     @Bean

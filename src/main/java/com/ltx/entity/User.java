@@ -1,6 +1,7 @@
 package com.ltx.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ltx.easyExcel.converter.ListConverter;
 import com.ltx.easyExcel.converter.SexEnumConverter;
 import com.ltx.mybatisPlus.SexEnum;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -44,5 +46,8 @@ public class User {
     @ExcelProperty(value = "描述")
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp datetime;
+
+    private Date date;
 }
