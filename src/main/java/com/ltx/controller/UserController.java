@@ -2,16 +2,13 @@ package com.ltx.controller;
 
 import com.ltx.dao.UserDao;
 import com.ltx.entity.User;
-import common.R;
 import exceptions.CustomException;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -19,17 +16,42 @@ public class UserController {
     @Resource
     UserDao userDao;
 
-    @GetMapping("/users")
-    public R query() {
-        List<User> userList = userDao.select();
-        return R.ok().put("userList", userList);
+    /**
+     * 查询
+     */
+    @GetMapping("/users/{id}")
+    @Cacheable(value = "userCache", key = "#id", unless = "#result == null")
+    public User query(@PathVariable Integer id) {
+        return userDao.selectById(id);
     }
 
+    /**
+     * 新增
+     */
     @PostMapping("/users")
-    @CachePut(value = "userCache",key = "#user.id")
-    public R add(@RequestBody User user) {
+    @CachePut(value = "userCache", key = "#user.id")
+    public User add(@RequestBody User user) {
         userDao.add(user);
-        return R.ok("新增成功");
+        return user;
+    }
+
+    /**
+     * 删除
+     */
+    @PostMapping("/users/{id}")
+    @CacheEvict(value = "userCache", key = "#id")
+    public void delete(@PathVariable Integer id) {
+        userDao.deleteById(id);
+    }
+
+    /**
+     * 更新
+     */
+    @PutMapping("/users/{id}")
+    @CacheEvict(value = "userCache", key = "#id")
+    public void update(@PathVariable Integer id) {
+        User user = new User().setId(id).setAge(20);
+        userDao.updateById(user);
     }
 
 

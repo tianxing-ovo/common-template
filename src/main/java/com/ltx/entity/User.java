@@ -1,6 +1,7 @@
 package com.ltx.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ltx.easyExcel.converter.ListConverter;
 import com.ltx.easyExcel.converter.SexEnumConverter;
@@ -47,7 +48,9 @@ public class User {
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @TableField("my_datetime")
     private Timestamp datetime;
 
+    @TableField("my_date")
     private Date date;
 }
