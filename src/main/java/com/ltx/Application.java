@@ -3,6 +3,7 @@ package com.ltx;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
@@ -11,10 +12,11 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * proxyTargetClass = false -> 使用jdk代理(实现接口)
  * exposeProxy = true -> 公开代理 -> 使用AopContext.currentProxy()获取代理对象
  */
-@EnableScheduling // 启用Spring的任务调度
+@EnableScheduling // 启用Spring定时任务
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) // 启用AspectJ自动代理
 @SpringBootApplication(scanBasePackages = {"redis","com.ltx"})
 @EnableRedisHttpSession // 使用Redis存储session
+@EnableAsync  // 启用异步方法调用
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
