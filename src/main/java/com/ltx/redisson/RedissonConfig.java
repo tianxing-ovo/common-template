@@ -16,11 +16,11 @@ public class RedissonConfig {
 
     @Bean(destroyMethod="shutdown")
     public RedissonClient redisson() {
-        //1.创建配置
+        // 创建配置
         Config config = new Config();
         // 单节点模式
         config.useSingleServer().setAddress("redis://localhost:6379");
-        //2.根据Config创建出RedissonClient实例
+        // 根据Config创建出RedissonClient实例
         return Redisson.create(config);
     }
 }
