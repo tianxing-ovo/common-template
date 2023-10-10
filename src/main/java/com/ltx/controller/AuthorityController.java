@@ -1,7 +1,7 @@
 package com.ltx.controller;
 
 import com.ltx.annotation.PreAuthorize;
-import common.R;
+import io.github.tianxingovo.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

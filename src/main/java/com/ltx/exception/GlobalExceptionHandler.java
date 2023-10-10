@@ -2,8 +2,8 @@ package com.ltx.exception;
 
 
 import com.ltx.internationalization.MessageSourceUtil;
-import common.R;
-import exceptions.CustomException;
+import io.github.tianxingovo.common.R;
+import io.github.tianxingovo.exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;

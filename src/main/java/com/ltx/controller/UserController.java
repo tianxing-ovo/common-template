@@ -2,7 +2,7 @@ package com.ltx.controller;
 
 import com.ltx.dao.UserDao;
 import com.ltx.entity.User;
-import exceptions.CustomException;
+import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;

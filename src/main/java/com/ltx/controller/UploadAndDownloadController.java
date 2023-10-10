@@ -1,6 +1,7 @@
 package com.ltx.controller;
 
-import common.R;
+
+import io.github.tianxingovo.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
