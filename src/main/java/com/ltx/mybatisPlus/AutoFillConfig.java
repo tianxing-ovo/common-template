@@ -3,7 +3,8 @@ package com.ltx.mybatisPlus;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Configuration;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -13,14 +14,13 @@ import java.util.Date;
 public class AutoFillConfig implements MetaObjectHandler {
 
 
-   
     /**
      * 插入填充
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        metaObject.setValue("createTime",new Date());
-        metaObject.setValue("updateTime",new Date());
+        metaObject.setValue("createTime", LocalDateTime.now());
+        metaObject.setValue("updateTime", LocalDateTime.now());
     }
 
 
@@ -29,6 +29,6 @@ public class AutoFillConfig implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        metaObject.setValue("updateTime",new Date());
+        metaObject.setValue("updateTime", LocalDateTime.now());
     }
 }
