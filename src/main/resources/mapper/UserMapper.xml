@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ltx.dao.UserDao">
     <!--json对应List-->
-    <resultMap id="userMap" type="com.ltx.entity.User">
+    <resultMap id="userMap" type="User">
         <result column="password" property="password"
                 jdbcType="OTHER"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
