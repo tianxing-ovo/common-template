@@ -8,11 +8,16 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
+
 /**
  * web配置
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Resource
+    MyInterceptor myInterceptor;
 
     /**
      * 添加拦截器
@@ -22,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor())
+        registry.addInterceptor(myInterceptor)
                 .addPathPatterns("/**").
                 excludePathPatterns("/login").order(0);
     }
