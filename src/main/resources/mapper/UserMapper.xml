@@ -39,14 +39,28 @@
         </choose>
         limit 10 offset 0
     </select>
-    <select id="select" resultMap="userMap">
-        select *
-        from user
-        limit 10 offset 0
-    </select>
-    <select id="queryGroupBy" resultType="com.ltx.entity.SexCount">
+    <select id="queryGroupBy" resultType="SexCount">
         select ${groupField} as field, count(*) as count
         from user
         group by ${groupField}
+    </select>
+    <select id="queryUserList" resultType="User">
+        select * from user
+        <where>
+            <if test="requestBody != null and requestBody.id != null and requestBody.id != ''">
+                and id >= #{requestBody.id}
+            </if>
+            <if test="requestBody != null and requestBody.age != null and requestBody.age != ''">
+                and age &lt;= #{requestBody.age}
+            </if>
+            <if test="requestBody != null and requestBody.name != null and requestBody.name != ''">
+                and name rlike #{requestBody.name}
+            </if>
+        </where>
+    </select>
+    <select id="select" resultMap="userMap">
+        select *
+        from user limit 10
+        offset 0
     </select>
 </mapper>

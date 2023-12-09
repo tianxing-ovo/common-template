@@ -2,6 +2,7 @@ package com.ltx.controller;
 
 import com.ltx.dao.UserDao;
 import com.ltx.entity.User;
+import com.ltx.entity.request.UserRequestBody;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -9,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -17,13 +19,23 @@ public class UserController {
     UserDao userDao;
 
     /**
-     * 查询
+     * 查询指定用户
      */
     @GetMapping("/users/{id}")
-    @Cacheable(value = "userCache", key = "#id", unless = "#result == null")
+    @Cacheable(value = "userCache", key = "T(com.ltx.constant.RedisConstant).CACHE_USER_KEY+#id", unless = "#result == null")
     public User query(@PathVariable Integer id) {
         return userDao.selectById(id);
     }
+
+    /**
+     * 查询用户列表
+     */
+    @PostMapping("/users/list")
+    @Cacheable(value = "userCache", key = "T(com.ltx.constant.RedisConstant).CACHE_USER_KEY + (#requestBody == null ? 'allUsers' : #requestBody.id + ':' + #requestBody.age + ':' + #requestBody.name)", unless = "#result == null || #result.size() == 0")
+    public List<User> queryUserList(@RequestBody(required = false) UserRequestBody requestBody) {
+        return userDao.queryUserList(requestBody);
+    }
+
 
     /**
      * 新增

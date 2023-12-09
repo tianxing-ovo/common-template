@@ -14,7 +14,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 /**
  * 缓存配置
  */
-@EnableConfigurationProperties(CacheProperties.class) // 注册外部配置类
+@EnableConfigurationProperties(CacheProperties.class) // 加载缓存配置类
 @Configuration
 @EnableCaching  // 开启缓存注解功能
 public class CacheConfig {
@@ -27,9 +27,7 @@ public class CacheConfig {
         config = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
         // 指定value的序列化方式为json,链式调用,GenericJackson2JsonRedisSerializer是通用的json序列化器
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-
         CacheProperties.Redis redisProperties = cacheProperties.getRedis();
-
         if (redisProperties.getTimeToLive() != null) {
             config = config.entryTtl(redisProperties.getTimeToLive()); // 缓存过期时间
         }

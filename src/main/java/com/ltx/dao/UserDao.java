@@ -14,9 +14,12 @@ public interface UserDao extends BaseMapper<User> {
 
     List<User> select();
 
-    List<User> query(UserRequestBody requestBody);
+    List<User> query();
+
+    List<User> queryUserList(@Param("requestBody") UserRequestBody requestBody);
 
     void add(@Param("user") User user);
 
     List<SexCount> queryGroupBy(@Param("groupField") String groupField);
+
 }
