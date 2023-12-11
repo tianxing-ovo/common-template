@@ -3,6 +3,7 @@ package com.ltx.entity;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ltx.annotation.SensitiveInfo;
 import com.ltx.easyExcel.converter.ListConverter;
 import com.ltx.easyExcel.converter.SexEnumConverter;
 import com.ltx.mybatisPlus.SexEnum;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@SensitiveInfo({"province", "address", "password", "city"})
 public class User {
     @ExcelProperty(value = "id")
     private Integer id;

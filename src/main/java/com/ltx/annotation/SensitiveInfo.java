@@ -6,10 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 权限校验
+ * 脱敏处理
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface PreAuthorize {
-    String[] hasAnyRole();
+@Target(ElementType.TYPE)
+public @interface SensitiveInfo {
+
+    /**
+     * 需要脱敏处理的字段
+     */
+    String[] value();
 }
+
