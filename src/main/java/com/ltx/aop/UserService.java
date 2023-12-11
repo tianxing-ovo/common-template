@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    public String main(String s){
-        System.out.println("Hello Aop 1");
+    public String main(String s) {
+        System.out.println("Hello Aop");
+        printProxy();
         return s;
     }
 
-    public void printProxy(){
-        System.out.println(AopContext.currentProxy());
+    /**
+     * 获取代理对象
+     */
+    public void printProxy() {
+        System.out.println("代理对象: " + AopContext.currentProxy());
     }
 }

@@ -1,21 +1,24 @@
 package com.ltx.aop;
 
 import com.ltx.annotation.PreAuthorize;
-import io.github.tianxingovo.enums.ErrorCode;
+import io.github.tianxingovo.enums.ErrorCodeEnum;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 /**
  * 切面类
+ * order值小的切面先执行
  */
 @Aspect
 @Component
+@Order(1)
 public class UserAop {
 
     /**
@@ -27,7 +30,7 @@ public class UserAop {
     }
 
     /**
-     * 前置通知:在目标方法执行前执行
+     * 前置通知: 在目标方法执行前执行
      */
     @Before("pointcut()")
     public void before() {
@@ -35,7 +38,7 @@ public class UserAop {
     }
 
     /**
-     * 拦截带有指定注解的方法
+     * 前置通知: 拦截带有指定注解的方法
      */
     @Before("@annotation(com.ltx.annotation.PreAuthorize)")
     public void beforeAnnotation(JoinPoint joinPoint) {
@@ -45,12 +48,12 @@ public class UserAop {
         String[] roles = signature.getMethod().getAnnotation(PreAuthorize.class).hasAnyRole();
         boolean b = Arrays.asList(roles).contains(role);
         if (!b) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED.getCode(), ErrorCode.UNAUTHORIZED.getMessage());
+            throw new CustomException(ErrorCodeEnum.UNAUTHORIZED.getCode(), ErrorCodeEnum.UNAUTHORIZED.getMessage());
         }
     }
 
     /**
-     * 后置通知:在目标方法执行后执行，方法没有返回值时使用
+     * 后置通知: 在目标方法执行后执行,方法没有返回值时使用
      */
     @After("pointcut()")
     public void after() {
@@ -58,7 +61,7 @@ public class UserAop {
     }
 
     /**
-     * 返回通知:在目标方法返回结果后执行，方法有返回值时使用
+     * 返回通知: 在目标方法返回结果后执行,方法有返回值时使用
      */
     @AfterReturning("pointcut()")
     public void afterReturning() {
@@ -66,7 +69,7 @@ public class UserAop {
     }
 
     /**
-     * 异常通知:在目标方法抛出异常后执行
+     * 异常通知: 在目标方法抛出异常后执行
      */
     @AfterThrowing("pointcut()")
     public void afterThrowing() {
@@ -74,7 +77,7 @@ public class UserAop {
     }
 
     /**
-     * 环绕通知:在目标方法执行前后都执行
+     * 环绕通知: 在目标方法执行前后都执行
      */
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
