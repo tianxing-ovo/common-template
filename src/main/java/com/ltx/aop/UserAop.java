@@ -40,12 +40,12 @@ public class UserAop {
     /**
      * 前置通知: 拦截带有指定注解的方法
      */
-    @Before("@annotation(com.ltx.annotation.PreAuthorize)")
-    public void beforeAnnotation(JoinPoint joinPoint) {
+    @Before("@annotation(preAuthorize)")
+    public void beforeAnnotation(JoinPoint joinPoint, PreAuthorize preAuthorize) {
         Object[] args = joinPoint.getArgs();
         String role = (String) args[0];
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String[] roles = signature.getMethod().getAnnotation(PreAuthorize.class).hasAnyRole();
+        String[] roles = preAuthorize.hasAnyRole();
         boolean b = Arrays.asList(roles).contains(role);
         if (!b) {
             throw new CustomException(ErrorCodeEnum.UNAUTHORIZED.getCode(), ErrorCodeEnum.UNAUTHORIZED.getMessage());
@@ -61,10 +61,11 @@ public class UserAop {
     }
 
     /**
-     * 返回通知: 在目标方法返回结果后执行,方法有返回值时使用
+     * 返回通知: 在目标方法返回结果后执行,方法有返回值时使用,可以修改返回值
      */
-    @AfterReturning("pointcut()")
-    public void afterReturning() {
+    @AfterReturning(value = "pointcut()", returning = "user")
+    public void afterReturning(User user) {
+        user.setName("张三");
         System.out.println("AfterReturning Aop");
     }
 
