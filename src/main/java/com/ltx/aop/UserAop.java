@@ -72,8 +72,9 @@ public class UserAop {
     /**
      * 异常通知: 在目标方法抛出异常后执行
      */
-    @AfterThrowing("pointcut()")
-    public void afterThrowing() {
+    @AfterThrowing(value = "pointcut()", throwing = "ex")
+    public void afterThrowing(Exception ex) {
+        System.out.println(ex.getMessage());
         System.out.println("AfterThrowing Aop");
     }
 
