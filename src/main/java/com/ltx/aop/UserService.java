@@ -1,15 +1,16 @@
 package com.ltx.aop;
 
+import com.ltx.entity.User;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    public String main(String s) {
+    public User main(String name) {
         System.out.println("Hello Aop");
         printProxy();
-        return s;
+        return new User().setName(name);
     }
 
     /**

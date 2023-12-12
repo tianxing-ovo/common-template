@@ -19,9 +19,8 @@ public class AuthorityController {
      * 实现自定义权限控制
      */
     @PreAuthorize(hasAnyRole = "admin")
-    @GetMapping("/demo")
-    public R demo(@RequestParam("role") String role) {
-        System.out.println(role);
+    @GetMapping("/authority")
+    public R authority(@RequestParam("role") String role) {
         return R.ok("success");
     }
 }

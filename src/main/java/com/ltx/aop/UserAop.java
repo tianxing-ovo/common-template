@@ -1,12 +1,12 @@
 package com.ltx.aop;
 
 import com.ltx.annotation.PreAuthorize;
+import com.ltx.entity.User;
 import io.github.tianxingovo.enums.ErrorCodeEnum;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class UserAop {
     /**
      * 切入点
      */
-    @Pointcut("execution(public String com.ltx.aop.UserService.main(String))")
+    @Pointcut("execution(public com.ltx.entity.User com.ltx.aop.UserService.main(String))")
     public void pointcut() {
 
     }
@@ -44,7 +44,6 @@ public class UserAop {
     public void beforeAnnotation(JoinPoint joinPoint, PreAuthorize preAuthorize) {
         Object[] args = joinPoint.getArgs();
         String role = (String) args[0];
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String[] roles = preAuthorize.hasAnyRole();
         boolean b = Arrays.asList(roles).contains(role);
         if (!b) {
@@ -61,10 +60,11 @@ public class UserAop {
     }
 
     /**
-     * 返回通知: 在目标方法返回结果后执行,方法有返回值时使用,可以修改返回值
+     * 返回通知: 在目标方法返回结果后执行,方法有返回值时使用
      */
     @AfterReturning(value = "pointcut()", returning = "user")
     public void afterReturning(User user) {
+        // 修改返回值
         user.setName("张三");
         System.out.println("AfterReturning Aop");
     }
