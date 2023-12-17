@@ -1,4 +1,4 @@
-package com.ltx.threadPool;
+package com.ltx.juc;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
