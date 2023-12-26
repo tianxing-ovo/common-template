@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Resource
-    MyInterceptor myInterceptor;
+    CustomInterceptor customInterceptor;
 
     /**
      * 添加拦截器
@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptor)
+        registry.addInterceptor(customInterceptor)
                 .addPathPatterns("/**").
                 excludePathPatterns("/login").order(0);
     }

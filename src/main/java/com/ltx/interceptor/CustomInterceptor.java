@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * 自定义拦截器
  */
 @Component
-public class MyInterceptor implements HandlerInterceptor {
+public class CustomInterceptor implements HandlerInterceptor {
 
     private final ThreadLocalUtil<User> threadLocalUtil = new ThreadLocalUtil<>();
 

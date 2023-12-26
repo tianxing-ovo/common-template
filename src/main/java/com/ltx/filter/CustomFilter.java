@@ -1,5 +1,7 @@
 package com.ltx.filter;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.FilterConfig;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +11,9 @@ import java.io.IOException;
 /**
  * 自定义过滤器
  */
-public class MyFilter implements Filter {
+@Component
+public class CustomFilter implements Filter {
+
     /**
      * 初始化过滤器
      */
