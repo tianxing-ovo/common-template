@@ -17,14 +17,16 @@ import javax.annotation.Resource;
 @Slf4j
 public class ScheduledTask {
 
+    private final String cron = "0 0 0 * * ?";
+
     @Resource
-    RedissonUtil redissonUtil;
+    private RedissonUtil redissonUtil;
 
     /**
      * 秒 分 时 日 月 周
      */
     @SneakyThrows
-    @Scheduled(cron = "* * * * * ?") // 每秒执行一次
+    @Scheduled(cron = cron)
     @Async
     public void runTask() {
         // 分布式锁保证定时任务只执行一次

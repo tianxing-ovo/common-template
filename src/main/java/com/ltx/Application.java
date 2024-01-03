@@ -1,5 +1,6 @@
 package com.ltx;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -17,6 +18,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @SpringBootApplication(scanBasePackages = {"io.github.tianxingovo","com.ltx"})
 @EnableRedisHttpSession // 使用Redis存储session
 @EnableAsync  // 启用异步方法调用
+@EnableRabbit
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

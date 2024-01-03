@@ -1,7 +1,8 @@
 package com.ltx.mq.rabbitmq;
 
+
 import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -13,13 +14,13 @@ import java.util.HashMap;
 
 
 /**
- * Rabbitmq配置
+ * RabbitMQ配置
  */
 @Configuration
-public class RabbitmqConfig {
+public class RabbitMQConfig {
 
     /**
-     * 使用JSON序列化机制，进行消息转换
+     * 使用JSON序列化机制,进行消息转换
      */
     @Bean
     public MessageConverter messageConverter() {
@@ -28,11 +29,13 @@ public class RabbitmqConfig {
 
 
     /**
-     * 交换机
+     * Direct Exchange: 直接交换机,将消息路由到与消息的routing key完全匹配的队列
+     * Fanout Exchange: 扇出交换机,将消息广播到与该交换机绑定的所有队列
+     * Topic Exchange: 主题交换机,允许队列通过通配符匹配的方式接收消息;*匹配一个单词,#匹配零个或多个单词
      */
     @Bean
-    public Exchange stockEventExchange() {
-        return new TopicExchange("stock-event-exchange", true, false);
+    public TopicExchange topicExchange() {
+        return new TopicExchange("topic.exchange", true, false);
     }
 
     /**
@@ -43,8 +46,8 @@ public class RabbitmqConfig {
      * arguments: 额外的配置选项
      */
     @Bean
-    public Queue stockReleaseStockQueue() {
-        return new Queue("stock.release.stock.queue", true, false, false);
+    public Queue queue() {
+        return new Queue("queue", true, false, false);
     }
 
 
@@ -52,13 +55,13 @@ public class RabbitmqConfig {
      * 延迟队列
      */
     @Bean
-    public Queue stockDelay() {
+    public Queue delayQueue() {
         HashMap<String, Object> arguments = new HashMap<>();
-        arguments.put("x-dead-letter-exchange", "stock-event-exchange");
-        arguments.put("x-dead-letter-routing-key", "stock.release");
-        //消息过期时间:2分钟
+        arguments.put("x-dead-letter-exchange", "topic.exchange");
+        arguments.put("x-dead-letter-routing-key", "delay.queue");
+        // 消息过期时间:2分钟
         arguments.put("x-message-ttl", 120000);
-        return new Queue("stock.delay.queue", true, false, false, arguments);
+        return new Queue("delay.queue", true, false, false, arguments);
     }
 
 
@@ -66,23 +69,15 @@ public class RabbitmqConfig {
      * 交换机与队列绑定
      */
     @Bean
-    public Binding stockReleaseBinding() {
-        return new Binding("stock.release.stock.queue",
-                Binding.DestinationType.QUEUE,
-                "stock-event-exchange",
-                "stock.release.#",
-                null);
+    public Binding binding() {
+        return BindingBuilder.bind(queue()).to(topicExchange()).with("queue.#");
     }
 
     /**
      * 交换机与延迟队列绑定
      */
     @Bean
-    public Binding stockLockedBinding() {
-        return new Binding("stock.delay.queue",
-                Binding.DestinationType.QUEUE,
-                "stock-event-exchange",
-                "stock.locked",
-                null);
+    public Binding delayBinding() {
+        return BindingBuilder.bind(delayQueue()).to(topicExchange()).with("delay.queue.#");
     }
 }

@@ -58,7 +58,7 @@ public class DroolsConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public KModuleBeanFactoryPostProcessor kiePostProcessor() {
+    public static KModuleBeanFactoryPostProcessor kiePostProcessor() {
         return new KModuleBeanFactoryPostProcessor();
     }
 }

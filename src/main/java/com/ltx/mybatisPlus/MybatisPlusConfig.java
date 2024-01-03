@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * 分页插件
  */
 @Configuration
-@EnableTransactionManagement // 开启事务
+@EnableTransactionManagement
 public class MybatisPlusConfig {
 
     @Bean

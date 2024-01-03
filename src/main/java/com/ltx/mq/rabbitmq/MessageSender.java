@@ -1,21 +1,30 @@
 package com.ltx.mq.rabbitmq;
 
-import lombok.AllArgsConstructor;
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 消息发送者
  */
 @Component
-@AllArgsConstructor
 public class MessageSender {
 
-    private AmqpTemplate template;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
 
-    public void sendMessage(String exchangeName, String routingKey, Object obj) {
-        template.convertAndSend(exchangeName, routingKey, obj);
+    /**
+     * 发送消息
+     *
+     * @param exchangeName 交换机名称
+     * @param routingKey   路由键
+     * @param message      消息
+     */
+    public void sendMessage(String exchangeName, String routingKey, String message) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, message);
     }
 }
 
