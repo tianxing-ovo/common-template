@@ -1,8 +1,8 @@
 package com.ltx.controller;
 
-import com.ltx.dao.UserDao;
 import com.ltx.entity.User;
 import com.ltx.entity.request.UserRequestBody;
+import com.ltx.mapper.UserMapper;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UserController {
 
     @Resource
-    UserDao userDao;
+    UserMapper userMapper;
 
     /**
      * 查询指定用户
@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     @Cacheable(value = "userCache", key = "T(com.ltx.constant.RedisConstant).CACHE_USER_KEY+#id", unless = "#result == null")
     public User query(@PathVariable Integer id) {
-        return userDao.selectById(id);
+        return userMapper.selectById(id);
     }
 
     /**
@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/users/list")
     @Cacheable(value = "userCache", key = "T(com.ltx.constant.RedisConstant).CACHE_USER_KEY + (#requestBody == null ? 'allUsers' : #requestBody.id + ':' + #requestBody.age + ':' + #requestBody.name)", unless = "#result == null || #result.size() == 0")
     public List<User> queryUserList(@RequestBody(required = false) UserRequestBody requestBody) {
-        return userDao.queryUserList(requestBody);
+        return userMapper.queryUserList(requestBody);
     }
 
 
@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping("/users")
     @CachePut(value = "userCache", key = "#user.id")
     public User add(@RequestBody User user) {
-        userDao.add(user);
+        userMapper.add(user);
         return user;
     }
 
@@ -53,7 +53,7 @@ public class UserController {
     @PostMapping("/users/{id}")
     @CacheEvict(value = "userCache", key = "#id")
     public void delete(@PathVariable Integer id) {
-        userDao.deleteById(id);
+        userMapper.deleteById(id);
     }
 
     /**
@@ -63,7 +63,7 @@ public class UserController {
     @CacheEvict(value = "userCache", key = "#id")
     public void update(@PathVariable Integer id) {
         User user = new User().setId(id).setAge(20);
-        userDao.updateById(user);
+        userMapper.updateById(user);
     }
 
 

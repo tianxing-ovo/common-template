@@ -1,10 +1,10 @@
 package com.ltx.controller;
 
-import com.ltx.dao.UserDao;
 import com.ltx.easyExcel.service.ExportService;
 import com.ltx.easyExcel.service.ImportService;
 import com.ltx.entity.User;
 import com.ltx.entity.request.ExportRequestBody;
+import com.ltx.mapper.UserMapper;
 import io.github.tianxingovo.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +28,7 @@ public class ImportAndExportController {
     ExportService exportService;
 
     @Resource
-    UserDao userDao;
+    UserMapper userMapper;
 
     @Resource
     ImportService importService;
@@ -56,7 +56,7 @@ public class ImportAndExportController {
      */
     @PostMapping("/exportByEasyExcel")
     public void exportByEasyExcel(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
-        List<User> list = userDao.select();
+        List<User> list = userMapper.select();
         exportService.exportByEasyExcel(response, list, requestBody,User.class);
     }
 }
