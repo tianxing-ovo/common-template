@@ -31,13 +31,16 @@ public class ScheduledTask {
     public void runTask() {
         // 分布式锁保证定时任务只执行一次
         RLock lock = redissonUtil.getLock("lock");
+        boolean b = false;
         try {
-            boolean b = redissonUtil.tryLock(lock, 0, 10);
+            b = redissonUtil.tryLock(lock, 0, 10);
             if (!b) {
                 return;
             }
         } finally {
-            lock.unlock();
+            if (b) {
+                lock.unlock();
+            }
         }
         log.info("定时任务执行中...");
         Thread.sleep(3000);
