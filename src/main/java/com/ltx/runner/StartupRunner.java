@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class StartupRunner implements CommandLineRunner {
 
     /**
-     * 应用程序启动完成后(Spring容器初始化完成并开始运行后),主线程执行run()方法
+     * 应用程序启动完成后(Spring容器初始化完成并开始运行后),主线程自动执行run()方法
      */
     @Override
     public void run(String... args) {
