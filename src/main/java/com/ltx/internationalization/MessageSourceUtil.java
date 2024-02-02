@@ -14,13 +14,25 @@ import java.util.Locale;
 public class MessageSourceUtil {
 
     @Resource
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     /**
-     * 根据key获取value
+     * 使用当前线程的Locale,根据key获取value
      */
     public String getMessage(String key, Object[] args) {
         Locale locale = LocaleContextHolder.getLocale();
+        return getMessage(key, args, locale);
+    }
+
+    /**
+     * 根据key获取value
+     *
+     * @param key    key
+     * @param locale 区域
+     * @param args   参数
+     * @return value
+     */
+    public String getMessage(String key, Object[] args, Locale locale) {
         return messageSource.getMessage(key, args, locale);
     }
 }
