@@ -16,6 +16,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 规则引擎配置类
@@ -35,7 +36,7 @@ public class DroolsConfig {
         String path;
         for (Resource file : files) {
             path = RULES_PATH + file.getFilename();
-            kieFileSystem.write(ResourceFactory.newClassPathResource(path, "UTF-8"));
+            kieFileSystem.write(ResourceFactory.newClassPathResource(path, StandardCharsets.UTF_8.name()));
         }
         return kieFileSystem;
     }

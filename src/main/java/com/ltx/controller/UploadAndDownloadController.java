@@ -11,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +26,19 @@ import java.util.List;
 @RestController
 @Slf4j
 public class UploadAndDownloadController {
-    public static final String basePath = "C:/Users/李天行/Desktop/";
+    public static final String BASE_PATH = "C:/Users/李天行/Desktop/";
 
     /**
      * 单个文件上传
+     *
+     * @param file 文件
      */
     @PostMapping("/singleUpload")
     public R uploadFile(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             try {
-                file.transferTo(new File(basePath + fileName));
+                file.transferTo(Paths.get(BASE_PATH, fileName));
             } catch (IOException e) {
                 log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
                 return R.error(201, "文件上传失败");
@@ -49,6 +50,8 @@ public class UploadAndDownloadController {
 
     /**
      * 多个文件上传
+     *
+     * @param files 文件数组
      */
     @PostMapping("/multipleUpload")
     public R uploadFiles(@RequestParam("files") MultipartFile[] files) {
@@ -58,7 +61,7 @@ public class UploadAndDownloadController {
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
                 try {
-                    file.transferTo(new File(basePath + fileName));
+                    file.transferTo(Paths.get(BASE_PATH, fileName));
                     successMessageList.add(fileName + " 上传成功");
                 } catch (IOException e) {
                     log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
@@ -76,15 +79,14 @@ public class UploadAndDownloadController {
 
     /**
      * 文件下载
-     * attachment:将响应体视为附件
-     * filename:默认的下载文件名
+     *
+     * @param fileName 文件名称
      */
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<?> download(@PathVariable String fileName) throws UnsupportedEncodingException {
-        Path path = Paths.get(basePath).resolve(fileName);
         Resource resource;
         try {
-            resource = new UrlResource(path.toUri());
+            resource = new UrlResource(Paths.get(BASE_PATH, fileName).toUri());
         } catch (MalformedURLException e) {
             log.error("格式不正确");
             return ResponseEntity.badRequest().body("格式不正确");
@@ -92,8 +94,8 @@ public class UploadAndDownloadController {
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        fileName = URLEncoder.encode(fileName, "UTF-8");
-        // 附件,默认名称
+        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name());
+        // 附件
         headers.setContentDispositionFormData("attachment", fileName);
         return ResponseEntity.ok().headers(headers).body(resource);
     }

@@ -6,11 +6,13 @@ import com.ltx.easyExcel.ExcelConfig;
 import com.ltx.entity.request.ExportRequestBody;
 import io.github.tianxingovo.exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -19,14 +21,17 @@ public class ExportService {
 
     /**
      * 使用easyExcel库,导出CSV文件
+     *
+     * @param list        数据List
+     * @param requestBody 请求体
      */
     public <T> void exportByEasyExcel(HttpServletResponse response, List<T> list, ExportRequestBody requestBody, Class<T> clazz) {
         String fileName = requestBody.getFileName();
         List<String> fields = requestBody.getFields();
         response.setContentType("text/csv;charset=UTF-8");
         try {
-            fileName = URLEncoder.encode(fileName, "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name());
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
             EasyExcel.write(response.getOutputStream(), clazz)
                     .excelType(ExcelTypeEnum.CSV)
                     .registerWriteHandler(ExcelConfig.getCellWriteHandler())

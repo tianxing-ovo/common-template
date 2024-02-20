@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Resource
-    CustomInterceptor customInterceptor;
+    private CustomInterceptor customInterceptor;
 
     /**
      * 添加拦截器
