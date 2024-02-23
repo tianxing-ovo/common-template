@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ThreadUtil {
 
     @Resource
-    ThreadPoolExecutor executor;
+    private ThreadPoolExecutor executor;
 
     /**
      * 无返回值

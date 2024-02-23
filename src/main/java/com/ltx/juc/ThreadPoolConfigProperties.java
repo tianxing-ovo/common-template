@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * 线程池属性
  */
 @Component
-@ConfigurationProperties(prefix = "my.thread")
+@ConfigurationProperties(prefix = "thread-pool")
 @Data
 public class ThreadPoolConfigProperties {
     private int corePoolSize; // 核心线程数
