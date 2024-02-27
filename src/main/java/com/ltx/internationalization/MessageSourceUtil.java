@@ -18,6 +18,9 @@ public class MessageSourceUtil {
 
     /**
      * 使用当前线程的Locale,根据key获取value
+     *
+     * @param key  key
+     * @param args 参数
      */
     public String getMessage(String key, Object[] args) {
         Locale locale = LocaleContextHolder.getLocale();
