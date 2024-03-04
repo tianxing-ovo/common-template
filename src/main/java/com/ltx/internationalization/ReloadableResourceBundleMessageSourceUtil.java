@@ -23,10 +23,20 @@ public class ReloadableResourceBundleMessageSourceUtil {
     /**
      * 使用当前线程的Locale,根据key获取value
      *
+     * @param key key
+     */
+    public static String getMessage(String key) {
+        return getMessage(key, null);
+    }
+
+    /**
+     * 使用当前线程的Locale,根据key获取value
+     *
      * @param key  key
      * @param args 参数
      */
     public static String getMessage(String key, Object[] args) {
+        // 获取当前线程上下文的Locale
         Locale locale = LocaleContextHolder.getLocale();
         return getMessage(key, args, locale);
     }
