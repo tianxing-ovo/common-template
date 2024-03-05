@@ -8,6 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.stereotype.Indexed;
 
 /**
  * proxyTargetClass = true -> 使用cglib代理(继承)
@@ -21,6 +22,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableAsync  // 启用异步方法调用
 @EnableRabbit
 @MapperScan("com.ltx.mapper")
+@Indexed
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
