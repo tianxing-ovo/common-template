@@ -2,9 +2,9 @@ package com.ltx.controller;
 
 
 import io.github.tianxingovo.common.R;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -82,15 +80,10 @@ public class UploadAndDownloadController {
      *
      * @param fileName 文件名称
      */
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<?> download(@PathVariable String fileName) throws UnsupportedEncodingException {
-        Resource resource;
-        try {
-            resource = new UrlResource(Paths.get(BASE_PATH, fileName).toUri());
-        } catch (MalformedURLException e) {
-            log.error("格式不正确");
-            return ResponseEntity.badRequest().body("格式不正确");
-        }
+    @SneakyThrows
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<?> download(@PathVariable String fileName) {
+        FileSystemResource resource = new FileSystemResource(Paths.get(BASE_PATH, fileName));
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
