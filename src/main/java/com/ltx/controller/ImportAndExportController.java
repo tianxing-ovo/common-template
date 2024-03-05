@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 导入和导出
@@ -25,13 +26,16 @@ import java.util.List;
 public class ImportAndExportController {
 
     @Resource
-    ExportService exportService;
+    private ExportService exportService;
 
     @Resource
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Resource
-    ImportService importService;
+    private ImportService importService;
+
+    @Resource
+    private ThreadPoolExecutor executor;
 
     /**
      * 使用poi库,导入xlsx文件
@@ -52,11 +56,27 @@ public class ImportAndExportController {
     }
 
     /**
-     * 使用easyExcel库,导出CSV文件
+     * 使用easyExcel库,导出CSV文件到浏览器
      */
-    @PostMapping("/exportByEasyExcel")
-    public void exportByEasyExcel(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
         List<User> list = userMapper.select();
-        exportService.exportByEasyExcel(response, list, requestBody,User.class);
+        exportService.export(response, list, requestBody, User.class);
+    }
+
+    /**
+     * 使用easyExcel库,异步导出CSV文件到本地
+     */
+    @PostMapping("/exportToLocal")
+    public void asyncExport(@RequestBody ExportRequestBody requestBody) {
+        executor.execute(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            List<User> list = userMapper.select();
+            exportService.exportToLocal(list, requestBody, User.class);
+        });
     }
 }

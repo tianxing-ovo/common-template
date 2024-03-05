@@ -1,5 +1,6 @@
 package com.ltx.entity.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -9,7 +10,15 @@ import java.util.List;
  */
 @Data
 public class ExportRequestBody {
+    /**
+     * 文件名称
+     */
+    @JsonProperty("file_name")
     private String fileName;
-    // 需要导出的字段
-    private List<String> fields;
+
+    /**
+     * 导出字段列表
+     */
+    @JsonProperty("field_list")
+    private List<String> fieldList;
 }
