@@ -5,6 +5,7 @@ import com.ltx.mybatisPlus.SexEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -15,20 +16,26 @@ import java.util.List;
 @Accessors(chain = true)
 public class UserRequestBody {
 
+    @Min(1)
     private Integer id;
 
+    @NotNull
     private String name;
 
+    @Max(20)
     private Integer age;
 
     private SexEnum sex;
 
     private List<String> password;
 
+    @NotEmpty
     private String province;
 
+    @NotBlank
     private String address;
 
+    @Size(min = 1, max = 10)
     private String city;
 
     private String description;

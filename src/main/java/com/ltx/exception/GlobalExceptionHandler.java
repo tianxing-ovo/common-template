@@ -4,7 +4,6 @@ package com.ltx.exception;
 import io.github.tianxingovo.common.R;
 import io.github.tianxingovo.exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,29 +20,29 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理自定义异常
+     *
+     * @param customException 自定义异常
      */
     @ExceptionHandler(value = CustomException.class)
-    public R handleAccessDeniedException(CustomException e) {
-        String message = e.getMessage();
-        log.error("错误信息:{},异常类型:{}", message, e.getClass());
-        return R.error(e.getCode(), message);
+    public R handleAccessDeniedException(CustomException customException) {
+        String message = customException.getMessage();
+        log.error("错误信息:{},异常类型:{}", message, customException.getClass());
+        return R.error(customException.getCode(), message);
     }
 
     /**
      * 处理数据校验异常
      * value初始化为Exception.class，通过测试得出真正的异常类型
+     *
+     * @param methodArgumentNotValidException 方法参数无效异常
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public R handleValidException(MethodArgumentNotValidException e) {
-        Map<String, Object> map = new HashMap<>();
-        BindingResult result = e.getBindingResult();
-        result.getFieldErrors().forEach(item -> {
-            String message = item.getDefaultMessage(); //获取错误信息
-            String field = item.getField(); //获取错误字段
-            map.put(field, message);
-        });
-        log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
-        return R.error(202, "方法参数无效", map);
+    public R handleValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        // key=字段名称,value=错误信息
+        Map<String, Object> errorMap = new HashMap<>();
+        methodArgumentNotValidException.getBindingResult().getFieldErrors().forEach(fieldError -> errorMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
+        log.error("错误信息:{},异常类型:{}", methodArgumentNotValidException.getMessage(), methodArgumentNotValidException.getClass());
+        return R.error(400, "方法参数无效", errorMap);
     }
 
 

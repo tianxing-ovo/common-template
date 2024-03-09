@@ -3,6 +3,7 @@ package com.ltx.controller;
 import com.ltx.entity.User;
 import com.ltx.entity.request.UserRequestBody;
 import com.ltx.mapper.UserMapper;
+import io.github.tianxingovo.common.R;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -67,8 +69,22 @@ public class UserController {
     }
 
 
-    @GetMapping("/i18n")
-    public void test() {
+    /**
+     * 测试国际化功能
+     */
+    @GetMapping("/test/i18n")
+    public void testInternationalization() {
         throw new CustomException(404, "未找到");
+    }
+
+    /**
+     * 测试校验功能
+     *
+     * @param requestBody 请求体
+     * @return {@link R}
+     */
+    @PostMapping("/test/validation")
+    public R testValidation(@Valid @RequestBody UserRequestBody requestBody) {
+        return R.ok().put("requestBody", requestBody);
     }
 }
