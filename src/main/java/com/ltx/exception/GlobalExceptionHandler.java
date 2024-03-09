@@ -32,7 +32,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理数据校验异常
-     * value初始化为Exception.class，通过测试得出真正的异常类型
      *
      * @param methodArgumentNotValidException 方法参数无效异常
      */

@@ -3,6 +3,7 @@ package com.ltx.entity.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ltx.mybatisPlus.SexEnum;
 import com.ltx.valid.InsertGroup;
+import com.ltx.valid.ListValue;
 import com.ltx.valid.UpdateGroup;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -28,6 +29,9 @@ public class UserRequestBody {
 
     @Max(20)
     private Integer age;
+
+    @ListValue(values = {1, 2}, groups = {InsertGroup.class})
+    private Integer status;
 
     private SexEnum sex;
 
