@@ -3,15 +3,16 @@ package com.ltx.controller;
 import com.ltx.entity.User;
 import com.ltx.entity.request.UserRequestBody;
 import com.ltx.mapper.UserMapper;
+import com.ltx.valid.InsertGroup;
 import io.github.tianxingovo.common.R;
 import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -84,7 +85,7 @@ public class UserController {
      * @return {@link R}
      */
     @PostMapping("/test/validation")
-    public R testValidation(@Valid @RequestBody UserRequestBody requestBody) {
+    public R testValidation(@Validated(InsertGroup.class) @RequestBody UserRequestBody requestBody) {
         return R.ok().put("requestBody", requestBody);
     }
 }
