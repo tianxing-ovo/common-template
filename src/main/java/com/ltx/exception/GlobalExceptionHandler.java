@@ -2,12 +2,14 @@ package com.ltx.exception;
 
 
 import io.github.tianxingovo.common.R;
-import io.github.tianxingovo.exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,17 +33,33 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理数据校验异常
+     * 处理实体类校验异常
      *
      * @param methodArgumentNotValidException 方法参数无效异常
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public R handleValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public R handleEntityNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         // key=字段名称,value=错误信息
         Map<String, Object> errorMap = new HashMap<>();
         methodArgumentNotValidException.getBindingResult().getFieldErrors().forEach(fieldError -> errorMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
         log.error("错误信息:{},异常类型:{}", methodArgumentNotValidException.getMessage(), methodArgumentNotValidException.getClass());
-        return R.error(400, "方法参数无效", errorMap);
+        return R.error(HttpStatus.BAD_REQUEST.value(), "方法参数无效", errorMap);
+    }
+
+    /**
+     * 处理单个参数校验异常
+     *
+     * @param constraintViolationException 约束冲突异常
+     */
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public R handleSingleParameterNotValidException(ConstraintViolationException constraintViolationException) {
+        // key=字段名称,value=错误信息
+        Map<String, Object> errorMap = new HashMap<>();
+        for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
+            errorMap.put(constraintViolation.getPropertyPath().toString().split("\\.")[1], constraintViolation.getMessage());
+        }
+        log.error("错误信息:{},异常类型:{}", constraintViolationException.getMessage(), constraintViolationException.getClass());
+        return R.error(HttpStatus.BAD_REQUEST.value(), "方法参数无效", errorMap);
     }
 
 

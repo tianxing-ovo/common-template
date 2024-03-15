@@ -13,9 +13,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserController {
 
     @Resource
@@ -79,7 +81,7 @@ public class UserController {
     }
 
     /**
-     * 测试校验功能
+     * 测试实体类校验功能
      *
      * @param requestBody 请求体
      * @return {@link R}
@@ -87,5 +89,16 @@ public class UserController {
     @PostMapping("/test/validation")
     public R testValidation(@Validated(InsertGroup.class) @RequestBody UserRequestBody requestBody) {
         return R.ok().put("requestBody", requestBody);
+    }
+
+    /**
+     * 测试单个参数校验功能
+     *
+     * @param name 名字
+     * @return {@link R}
+     */
+    @GetMapping("/test/validation")
+    public R testValidation(@RequestParam("name") @Size(min = 1, max = 10) String name) {
+        return R.ok().put("name", name);
     }
 }
