@@ -2,8 +2,8 @@ package com.ltx.aop;
 
 import com.ltx.annotation.PreAuthorize;
 import com.ltx.entity.User;
+import com.ltx.exception.CustomException;
 import io.github.tianxingovo.enums.ErrorCodeEnum;
-import io.github.tianxingovo.exceptions.CustomException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;

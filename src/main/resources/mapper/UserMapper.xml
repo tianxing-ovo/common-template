@@ -5,6 +5,7 @@
     <!--json对应List-->
     <resultMap id="userMap" type="User">
         <result column="password" property="password"
+                javaType="java.util.List"
                 jdbcType="OTHER"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
@@ -17,8 +18,6 @@
         </foreach>), #{user.sex}, #{user.province},
         #{user.address}, #{user.city}, #{user.description}, #{user.datetime}, #{user.date})
     </insert>
-
-
     <select id="query" resultMap="userMap">
         select * from user
         where my_date >= #{startDate} and date(my_datetime)>= #{startDate}

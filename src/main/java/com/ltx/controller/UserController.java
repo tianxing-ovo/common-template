@@ -2,10 +2,10 @@ package com.ltx.controller;
 
 import com.ltx.entity.User;
 import com.ltx.entity.request.UserRequestBody;
+import com.ltx.exception.CustomException;
 import com.ltx.mapper.UserMapper;
 import com.ltx.valid.InsertGroup;
 import io.github.tianxingovo.common.R;
-import io.github.tianxingovo.exceptions.CustomException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
