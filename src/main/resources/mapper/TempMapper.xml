@@ -15,4 +15,8 @@
         select id, service_name, risk_type, person
         from temp;
     </select>
+    <select id="query" resultType="com.ltx.entity.Temp">
+        select id, service_name, risk_type, person
+        from temp
+    </select>
 </mapper>

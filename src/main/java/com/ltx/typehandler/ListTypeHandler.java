@@ -12,14 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * List -> varchar
+ * List <--> varchar
  */
 public class ListTypeHandler extends BaseTypeHandler<List<String>> {
+
+    /**
+     * 插入时使用,List -> String
+     */
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int index, List<String> list, JdbcType jdbcType) throws SQLException {
         preparedStatement.setString(index, list.stream().distinct().sorted().collect(Collectors.joining(",")));
     }
 
+    /**
+     * 查询时使用,String -> List
+     */
     @Override
     public List<String> getNullableResult(ResultSet resultSet, String column) throws SQLException {
         String value = resultSet.getString(column);
