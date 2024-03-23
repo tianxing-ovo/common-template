@@ -1,7 +1,7 @@
 package com.ltx.controller;
 
 
-import com.ltx.constant.SystemConstant;
+import com.ltx.constant.Constant;
 import io.github.tianxingovo.common.R;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class UploadAndDownloadController {
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             try {
-                file.transferTo(Paths.get(SystemConstant.BASE_PATH, fileName));
+                file.transferTo(Paths.get(Constant.BASE_PATH, fileName));
             } catch (IOException e) {
                 log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
                 return R.error(201, "文件上传失败");
@@ -59,7 +59,7 @@ public class UploadAndDownloadController {
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
                 try {
-                    file.transferTo(Paths.get(SystemConstant.BASE_PATH, fileName));
+                    file.transferTo(Paths.get(Constant.BASE_PATH, fileName));
                     successMessageList.add(fileName + " 上传成功");
                 } catch (IOException e) {
                     log.error("错误信息:{},异常类型:{}", e.getMessage(), e.getClass());
@@ -83,7 +83,7 @@ public class UploadAndDownloadController {
     @SneakyThrows
     @GetMapping("/download/{fileName}")
     public ResponseEntity<?> download(@PathVariable String fileName) {
-        FileSystemResource resource = new FileSystemResource(Paths.get(SystemConstant.BASE_PATH, fileName));
+        FileSystemResource resource = new FileSystemResource(Paths.get(Constant.BASE_PATH, fileName));
         HttpHeaders headers = new HttpHeaders();
         // "application/octet-stream"
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

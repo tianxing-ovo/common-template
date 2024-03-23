@@ -1,5 +1,6 @@
 package com.ltx.controller;
 
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.ltx.easyExcel.service.ExportService;
 import com.ltx.easyExcel.service.ImportService;
 import com.ltx.entity.User;
@@ -61,7 +62,7 @@ public class ImportAndExportController {
     @PostMapping("/export")
     public void export(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
         List<User> list = userMapper.select();
-        exportService.export(response, list, requestBody, User.class);
+        exportService.export(response, list, requestBody, User.class, ExcelTypeEnum.CSV);
     }
 
     /**
@@ -76,7 +77,7 @@ public class ImportAndExportController {
                 e.printStackTrace();
             }
             List<User> list = userMapper.select();
-            exportService.exportToLocal(list, requestBody, User.class);
+            exportService.exportToLocal(list, requestBody, User.class, ExcelTypeEnum.CSV);
         });
     }
 }
