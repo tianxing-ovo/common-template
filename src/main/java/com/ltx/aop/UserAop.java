@@ -3,6 +3,7 @@ package com.ltx.aop;
 import com.ltx.annotation.PreAuthorize;
 import com.ltx.entity.User;
 import com.ltx.exception.CustomException;
+import com.ltx.util.ThreadLocalUtil;
 import io.github.tianxingovo.enums.ErrorCodeEnum;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -42,9 +43,12 @@ public class UserAop {
      */
     @Before("@annotation(preAuthorize)")
     public void beforeAnnotation(JoinPoint joinPoint, PreAuthorize preAuthorize) {
+        // 获取请求参数数组
         Object[] args = joinPoint.getArgs();
-        String role = (String) args[0];
         String[] roles = preAuthorize.hasAnyRole();
+        User user = ThreadLocalUtil.get();
+        user.setId((Integer) args[0]);
+        String role = user.getRole();
         boolean b = Arrays.asList(roles).contains(role);
         if (!b) {
             throw new CustomException(ErrorCodeEnum.UNAUTHORIZED.getCode(), ErrorCodeEnum.UNAUTHORIZED.getMessage());

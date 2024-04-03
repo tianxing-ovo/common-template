@@ -17,7 +17,7 @@ import org.springframework.stereotype.Indexed;
  */
 @EnableScheduling // 启用Spring定时任务
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) // 启用AspectJ自动代理
-@SpringBootApplication(scanBasePackages = {"io.github.tianxingovo","com.ltx"})
+@SpringBootApplication(scanBasePackages = {"io.github.tianxingovo", "com.ltx"})
 @EnableRedisHttpSession // 使用Redis存储session
 @EnableAsync  // 启用异步方法调用
 @EnableRabbit

@@ -55,4 +55,6 @@ public class User {
 
     @TableField("my_date")
     private Date date;
+
+    private String role;
 }

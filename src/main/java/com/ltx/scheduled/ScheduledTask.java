@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @Slf4j
 public class ScheduledTask {
 
-    private final String cron = "* * * * * ?";
+    private final String cron = "0 0 * * * ?";
 
     @Resource
     private RedissonUtil redissonUtil;
