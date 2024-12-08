@@ -1,6 +1,7 @@
 package com.ltx.mybatisPlus;
 
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -8,20 +9,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * 分页插件
+ * 分页插件配置
  */
 @Configuration
 @EnableTransactionManagement
 public class MybatisPlusConfig {
 
+    /**
+     * 添加分页插件
+     *
+     * @return {@link MybatisPlusInterceptor }
+     */
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
-        PaginationInnerInterceptor interceptor = new PaginationInnerInterceptor();
-        // 请求页大于最后页,true回到首页,false继续请求,默认为false
+        // 如果有多数据源可以不配具体类型
+        PaginationInnerInterceptor interceptor = new PaginationInnerInterceptor(DbType.MYSQL);
+        // 溢出总页数后是否进行处理(默认为false)
         interceptor.setOverflow(true);
-        // 设置单页最大数量
-        interceptor.setMaxLimit(10000L);
+        // 单页分页条数限制
+        interceptor.setMaxLimit(1000L);
+        // 添加分页插件
         mybatisPlusInterceptor.addInnerInterceptor(interceptor);
         return mybatisPlusInterceptor;
     }
