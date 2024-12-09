@@ -1,4 +1,4 @@
-package com.ltx.mybatisPlus;
+package com.ltx.mybatisplus;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;
