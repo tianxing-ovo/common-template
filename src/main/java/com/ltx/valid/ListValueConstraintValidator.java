@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * ListValue约束校验器
+ *
+ * @author tianxing
  */
 public class ListValueConstraintValidator implements ConstraintValidator<ListValue, Integer> {
 

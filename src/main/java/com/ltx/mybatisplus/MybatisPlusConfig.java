@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * 分页插件配置
+ *
+ * @author tianxing
  */
 @Configuration
 @EnableTransactionManagement
@@ -21,7 +23,7 @@ public class MybatisPlusConfig {
      * @return {@link MybatisPlusInterceptor }
      */
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor(){
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         // 如果有多数据源可以不配具体类型
         PaginationInnerInterceptor interceptor = new PaginationInnerInterceptor(DbType.MYSQL);

@@ -1,8 +1,15 @@
 package com.ltx.constant;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * 常量
+ *
+ * @author tianxing
  */
 public interface Constant {
-    String BASE_PATH = "C:/Users/litianxing/Desktop/";
+    String USER_HOME = System.getProperty("user.home");
+    Path DESKTOP_PATH = Paths.get(USER_HOME, "Desktop");
+    String COMMA = ",";
 }

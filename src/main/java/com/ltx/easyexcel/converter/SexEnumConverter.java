@@ -1,4 +1,4 @@
-package com.ltx.easyExcel.converter;
+package com.ltx.easyexcel.converter;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
@@ -6,10 +6,12 @@ import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
-import com.ltx.mybatisPlus.SexEnum;
+import com.ltx.enums.SexEnum;
 
 /**
  * 性别枚举转换器
+ *
+ * @author tianxing
  */
 public class SexEnumConverter implements Converter<SexEnum> {
     @Override

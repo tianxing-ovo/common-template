@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义校验注解
+ *
+ * @author tianxing
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

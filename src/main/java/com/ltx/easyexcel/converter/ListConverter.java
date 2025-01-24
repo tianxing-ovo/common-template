@@ -1,4 +1,4 @@
-package com.ltx.easyExcel.converter;
+package com.ltx.easyexcel.converter;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * List转换器
+ *
+ * @author tianxing
  */
 public class ListConverter implements Converter<List<String>> {
     @Override

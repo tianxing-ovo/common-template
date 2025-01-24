@@ -6,14 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 脱敏处理
+ * 敏感信息注解
+ *
+ * @author tianxing
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface SensitiveInfo {
 
     /**
-     * 需要脱敏处理的字段
+     * @return 需要脱敏处理的字段
      */
     String[] value();
 }

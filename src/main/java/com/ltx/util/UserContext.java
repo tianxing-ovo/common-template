@@ -1,15 +1,19 @@
 package com.ltx.util;
 
-import com.ltx.entity.User;
+import com.ltx.entity.po.User;
 
 /**
- * 多线程环境中保存/获取用户信息
+ * 存储每个线程的用户信息
+ *
+ * @author tianxing
  */
-public class ThreadLocalUtil {
-    private final static ThreadLocal<User> THREAD_LOCAL = new ThreadLocal<>();
+public class UserContext {
+    private static final ThreadLocal<User> THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 获取用户信息
+     *
+     * @return 用户信息
      */
     public static User get() {
         return THREAD_LOCAL.get();

@@ -4,9 +4,13 @@ import lombok.Data;
 
 /**
  * 订单类
+ *
+ * @author tianxing
  */
 @Data
 public class Order {
-    private Integer amount; //金额
-    private Integer score;  //积分
+    // 金额
+    private Integer amount;
+    // 积分
+    private Integer score;
 }

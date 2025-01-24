@@ -1,7 +1,9 @@
 package com.ltx.constant;
 
 /**
- * redis常量
+ * Redis常量
+ *
+ * @author tianxing
  */
 public interface RedisConstant {
 

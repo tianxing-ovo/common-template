@@ -10,29 +10,32 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 
 /**
  * springSession配置类
+ *
+ * @author tianxing
  */
 @Configuration
 public class SessionConfig {
 
     /**
      * cookie序列化器
+     *
+     * @return {@link CookieSerializer}
      */
     @Bean
     public CookieSerializer cookieSerializer() {
-
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
-
-        //设置作用域
+        // 设置作用域
         cookieSerializer.setDomainName(".xxx.com");
-        //设置cookie名字
+        // 设置cookie名字
         cookieSerializer.setCookieName("xxx-session");
-
         return cookieSerializer;
     }
 
 
     /**
-     * redis序列化器
+     * Redis序列化器
+     *
+     * @return {@link RedisSerializer}
      */
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {

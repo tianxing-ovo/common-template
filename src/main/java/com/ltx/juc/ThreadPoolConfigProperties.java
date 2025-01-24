@@ -9,13 +9,19 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 线程池属性
+ *
+ * @author tianxing
  */
 @Component
-@ConfigurationProperties(prefix = "thread-pool")
+@ConfigurationProperties("thread-pool")
 @Data
 public class ThreadPoolConfigProperties {
-    private int corePoolSize; // 核心线程数
-    private int maximumPoolSize; // 最大线程数
-    private long keepAliveTime; // 非核心线程的存活时间
-    private TimeUnit unit; // 存活时间的时间单位
+    // 核心线程数
+    private int corePoolSize;
+    // 最大线程数
+    private int maximumPoolSize;
+    // 非核心线程的存活时间
+    private long keepAliveTime;
+    // 存活时间的时间单位
+    private TimeUnit unit;
 }

@@ -6,9 +6,12 @@ import java.util.List;
 
 /**
  * 客户类
+ *
+ * @author tianxing
  */
 @Data
 public class Customer {
     private String name;
-    private List<Order> orderList; //订单集合
+    // 订单列表
+    private List<Order> orderList;
 }

@@ -8,16 +8,18 @@ import java.util.Locale;
 
 /**
  * 可重新加载的MessageSource工具类
+ *
+ * @author tianxing
  */
 public class ReloadableResourceBundleMessageSourceUtil {
 
-    private static final ReloadableResourceBundleMessageSource messageSource;
+    private static final ReloadableResourceBundleMessageSource MESSAGE_SOURCE;
 
     static {
-        messageSource = new ReloadableResourceBundleMessageSource();
+        MESSAGE_SOURCE = new ReloadableResourceBundleMessageSource();
         // 可以添加多个分组
-        messageSource.setBasenames("i18n/messages");
-        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        MESSAGE_SOURCE.setBasenames("i18n/messages");
+        MESSAGE_SOURCE.setDefaultEncoding(StandardCharsets.UTF_8.name());
     }
 
     /**
@@ -50,6 +52,6 @@ public class ReloadableResourceBundleMessageSourceUtil {
      * @return value
      */
     public static String getMessage(String key, Object[] args, Locale locale) {
-        return messageSource.getMessage(key, args, locale);
+        return MESSAGE_SOURCE.getMessage(key, args, locale);
     }
 }

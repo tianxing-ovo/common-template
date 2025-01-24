@@ -20,12 +20,20 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 规则引擎配置类
+ *
+ * @author tianxing
  */
 @Configuration
 public class DroolsConfig {
     //指定规则文件存放的目录
     private static final String RULES_PATH = "rules/";
     private final KieServices kieServices = KieServices.Factory.get();
+
+    @Bean
+    @ConditionalOnMissingBean
+    public static KModuleBeanFactoryPostProcessor kiePostProcessor() {
+        return new KModuleBeanFactoryPostProcessor();
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -55,11 +63,5 @@ public class DroolsConfig {
     @ConditionalOnMissingBean
     public KieBase kieBase() throws IOException {
         return kieContainer().getKieBase();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public static KModuleBeanFactoryPostProcessor kiePostProcessor() {
-        return new KModuleBeanFactoryPostProcessor();
     }
 }

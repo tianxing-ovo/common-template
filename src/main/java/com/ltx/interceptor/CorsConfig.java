@@ -8,13 +8,17 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 /**
- * 解决跨域问题
+ * 跨域配置
+ *
+ * @author tianxing
  */
 @Configuration
 public class CorsConfig {
 
     /**
      * 获取跨域过滤器
+     *
+     * @return 跨域过滤器
      */
     @Bean
     public CorsWebFilter corsWebFilter() {

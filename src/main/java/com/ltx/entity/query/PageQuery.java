@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 分页查询实体
+ *
+ * @author tianxing
  */
 @Data
 public class PageQuery {
@@ -19,6 +21,12 @@ public class PageQuery {
     // 升序还是降序(asc: 升序 desc: 降序)
     private String sortOrder = "asc";
 
+    /**
+     * 转换为分页对象
+     *
+     * @param items 排序字段
+     * @return 分页对象
+     */
     public Page<?> toPage(OrderItem... items) {
         Page<?> page = Page.of(pageNum, pageSize);
         if (StringUtils.isNotBlank(sortField)) {
@@ -32,9 +40,11 @@ public class PageQuery {
     }
 
     /**
+     * 转换为分页对象
+     *
      * @param column 默认排序字段
      * @param asc    是否升序
-     * @return {@link Page }<{@link ? }>
+     * @return 分页对象
      */
     public Page<?> toPage(String column, boolean asc) {
         return toPage(new OrderItem(column, asc));

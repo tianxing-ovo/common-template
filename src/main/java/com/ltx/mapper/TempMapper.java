@@ -2,13 +2,16 @@ package com.ltx.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.ltx.constant.DatasourceConstant;
-import com.ltx.entity.Temp;
+import com.ltx.entity.po.Temp;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author tianxing
+ */
 @DS(DatasourceConstant.MYSQL)
 public interface TempMapper {
 

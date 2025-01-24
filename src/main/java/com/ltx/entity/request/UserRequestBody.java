@@ -1,7 +1,7 @@
 package com.ltx.entity.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ltx.mybatisPlus.SexEnum;
+import com.ltx.enums.SexEnum;
 import com.ltx.valid.InsertGroup;
 import com.ltx.valid.ListValue;
 import com.ltx.valid.UpdateGroup;
@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * 查询用户请求体
+ *
+ * @author tianxing
  */
 @Data
 @Accessors(chain = true)

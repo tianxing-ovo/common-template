@@ -9,6 +9,8 @@ import java.util.Locale;
 
 /**
  * MessageSource工具类
+ *
+ * @author tianxing
  */
 @Component
 public class MessageSourceUtil {
@@ -17,7 +19,7 @@ public class MessageSourceUtil {
     private MessageSource messageSource;
 
     /**
-     * 使用当前线程的Locale,根据key获取value
+     * 使用当前线程的Locale -> 根据key获取value
      *
      * @param key key
      */
@@ -26,7 +28,7 @@ public class MessageSourceUtil {
     }
 
     /**
-     * 使用当前线程的Locale,根据key获取value
+     * 使用当前线程的Locale -> 根据key获取value
      *
      * @param key  key
      * @param args 参数

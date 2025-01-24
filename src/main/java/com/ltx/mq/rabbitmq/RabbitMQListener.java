@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * 监听器
+ *
+ * @author tianxing
  */
 @Component
 @RabbitListener(queues = "queue")
@@ -23,18 +25,29 @@ public class RabbitMQListener {
      * deliveryTag: 消息的唯一标识符
      * multiple=true -> 确认小于等于当前deliveryTag的所有消息
      * multiple=false -> 确认当前deliveryTag的消息
+     *
+     * @param msg     消息内容体
+     * @param message 原始消息对象
+     * @param channel 通道
+     * @throws IOException IO异常
      */
     @RabbitHandler(isDefault = true)
     public void handler(String msg, Message message, Channel channel) throws IOException {
+        // 消息的唯一标识符
+        long deliveryTag = message.getMessageProperties().getDeliveryTag();
         try {
-            System.out.println(msg);
+            log.info("接收到消息: {}", msg);
             log.info("{}", message.getMessageProperties().toString());
-            // (deliveryTag,multiple)
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);//手动确认
+            // 是否确认多条消息
+            boolean multiple = false;
+            // 手动确认
+            channel.basicAck(deliveryTag, multiple);
         } catch (Exception e) {
-            e.printStackTrace();
-            // 如果远程调用有异常,消息拒绝,重新返回队列,重新消费
-            channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            log.error("处理消息时发生异常", e);
+            // 是否重新放回队列
+            boolean requeue = true;
+            // 如果远程调用有异常 -> 消息拒绝 -> 放回队列重新消费
+            channel.basicReject(deliveryTag, requeue);
         }
     }
 }

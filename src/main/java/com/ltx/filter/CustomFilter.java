@@ -1,50 +1,39 @@
 package com.ltx.filter;
 
-import com.ltx.entity.User;
-import com.ltx.util.ThreadLocalUtil;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.*;
+import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * 自定义过滤器
+ *
+ * @author tianxing
  */
-public class CustomFilter implements Filter {
+@Slf4j
+public class CustomFilter extends OncePerRequestFilter {
 
     /**
-     * Web应用程序启动时调用
-     */
-    @Override
-    public void init(FilterConfig filterConfig) {
-        System.out.println("init");
-    }
-
-    /**
-     * 每次有请求到达时都会调用
+     * 对每个请求执行一次过滤操作
      * 执行顺序: before filter1 -> before filter2 -> controller -> after filter2 -> after filter1
+     *
+     * @param request     请求对象
+     * @param response    响应对象
+     * @param filterChain 过滤器链
      */
-    @Override
     @SneakyThrows
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        // controller处理请求前,前置逻辑顺序执行
-        ThreadLocalUtil.set(new User());
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response, FilterChain filterChain) {
+        // controller处理请求前顺序执行
+        log.info("before filter");
         // 将请求和响应传递给下一个过滤器或目标Servlet
         filterChain.doFilter(request, response);
-        // controller处理完请求并生成响应后,后置逻辑逆序执行
-        ThreadLocalUtil.remove();
-    }
-
-
-    /**
-     * Web应用程序停止运行时调用
-     */
-    @Override
-    public void destroy() {
-        System.out.println("destroy");
+        // controller处理完请求并生成响应后逆序执行
+        log.info("after filter");
     }
 }

@@ -10,12 +10,14 @@ import java.util.Locale;
 
 /**
  * 自定义LocaleResolver
- * 默认为AcceptHeaderLocaleResolver,根据请求头Accept-Language自动设置Locale
+ * 默认为AcceptHeaderLocaleResolver -> 根据请求头Accept-Language自动设置Locale
+ *
+ * @author tianxing
  */
 public class MyLocaleResolver implements LocaleResolver {
 
     /**
-     * 从请求参数中获取语言-国家,设置Locale
+     * 从请求参数中获取语言-国家 -> 设置Locale
      */
     @Override
     @NonNull

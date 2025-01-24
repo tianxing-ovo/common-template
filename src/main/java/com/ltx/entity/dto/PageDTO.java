@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 /**
  * 分页结果
+ *
+ * @author tianxing
  */
 @Data
 public class PageDTO {

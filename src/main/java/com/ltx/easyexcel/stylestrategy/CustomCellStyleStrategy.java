@@ -1,4 +1,4 @@
-package com.ltx.easyExcel.stylestrategy;
+package com.ltx.easyexcel.stylestrategy;
 
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
@@ -9,6 +9,8 @@ import java.util.Collections;
 
 /**
  * 自定义单元格样式
+ *
+ * @author tianxing
  */
 public class CustomCellStyleStrategy extends HorizontalCellStyleStrategy {
 

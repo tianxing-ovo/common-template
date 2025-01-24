@@ -1,4 +1,4 @@
-package com.ltx.mybatisPlus;
+package com.ltx.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -9,13 +9,16 @@ import java.time.LocalDateTime;
 
 /**
  * 自动填充配置
+ *
+ * @author tianxing
  */
 @Configuration
 public class AutoFillConfig implements MetaObjectHandler {
 
-
     /**
      * 插入填充
+     *
+     * @param metaObject 元对象
      */
     @Override
     public void insertFill(MetaObject metaObject) {
@@ -23,9 +26,10 @@ public class AutoFillConfig implements MetaObjectHandler {
         metaObject.setValue("updateTime", LocalDateTime.now());
     }
 
-
     /**
      * 更新填充
+     *
+     * @param metaObject 元对象
      */
     @Override
     public void updateFill(MetaObject metaObject) {

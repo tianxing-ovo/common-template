@@ -13,6 +13,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * 缓存配置
+ *
+ * @author tianxing
  */
 @EnableConfigurationProperties(CacheProperties.class) // 加载缓存配置类
 @Configuration
@@ -23,23 +25,26 @@ public class CacheConfig {
     public RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties) {
         // 获取默认配置
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-        // 指定key的序列化方式为String,链式调用
+        // 指定key的序列化方式为String
         config = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
-        // 指定value的序列化方式为json,链式调用,GenericJackson2JsonRedisSerializer是通用的json序列化器
+        // 指定value的序列化方式为json
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
         CacheProperties.Redis redisProperties = cacheProperties.getRedis();
         if (redisProperties.getTimeToLive() != null) {
-            config = config.entryTtl(redisProperties.getTimeToLive()); // 缓存过期时间
+            // 缓存过期时间
+            config = config.entryTtl(redisProperties.getTimeToLive());
         }
         if (redisProperties.getKeyPrefix() != null) {
             // 键前缀
             config = config.computePrefixWith((cacheName) -> redisProperties.getKeyPrefix() + cacheName + ":");
         }
         if (!redisProperties.isCacheNullValues()) {
-            config = config.disableCachingNullValues(); // 禁用缓存空值
+            // 禁用缓存空值
+            config = config.disableCachingNullValues();
         }
         if (!redisProperties.isUseKeyPrefix()) {
-            config = config.disableKeyPrefix(); // 禁用键前缀
+            // 禁用键前缀
+            config = config.disableKeyPrefix();
         }
         return config;
     }

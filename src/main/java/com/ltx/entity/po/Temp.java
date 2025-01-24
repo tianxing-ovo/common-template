@@ -1,4 +1,4 @@
-package com.ltx.entity;
+package com.ltx.entity.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * @author tianxing
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,21 +5,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 过滤器配置类,用于注册过滤器
+ * 过滤器配置
+ *
+ * @author tianxing
  */
 @Configuration
 public class FilterConfig {
 
     /**
      * 注册自定义过滤器
+     *
+     * @return 过滤器注册对象
      */
     @Bean
     public FilterRegistrationBean<CustomFilter> registerCustomFilter() {
         FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new CustomFilter());
-        // 匹配所有路径
+        // 拦截所有路径
         registration.addUrlPatterns("/*");
-        // 设置过滤器的执行顺序,小的优先级高
+        // 设置过滤器的执行顺序 -> Order小的优先级高
         registration.setOrder(Integer.MIN_VALUE);
         return registration;
     }

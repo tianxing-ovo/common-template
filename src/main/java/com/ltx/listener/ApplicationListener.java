@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * 应用程序监听器
+ *
+ * @author tianxing
  */
 @Component
 public class ApplicationListener {
-
 
     /**
      * ApplicationContext被初始化或刷新时触发

@@ -1,7 +1,7 @@
-package com.ltx.easyExcel.service;
+package com.ltx.easyexcel.service;
 
 import com.alibaba.excel.EasyExcel;
-import com.ltx.entity.User;
+import com.ltx.entity.po.User;
 import com.ltx.exception.CustomException;
 import com.ltx.listener.UserListener;
 import lombok.extern.slf4j.Slf4j;
@@ -16,24 +16,31 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author tianxing
+ */
 @Service
 @Slf4j
 public class ImportService {
+
     /**
      * 使用poi库导入
      * HSSFWorkbook -> .xls
      * XSSFWorkbook -> .xlsx
      * SXSSFWorkbook/DeferredSXSSFWorkbook -> 大型.xlsx
+     *
+     * @param file 文件
+     * @return 用户列表
      */
-    public List<User> importByPOI(MultipartFile file) {
-        List<User> UserList = new ArrayList<>();
-        DataFormatter dataFormatter = new DataFormatter(); // 数据格式化
-        try {
-            InputStream inputStream = file.getInputStream();
-            // 获取工作簿
-            Workbook workbook = new XSSFWorkbook(inputStream);
+    public List<User> importByPoi(MultipartFile file) {
+        List<User> userList = new ArrayList<>();
+        // 数据格式化
+        DataFormatter dataFormatter = new DataFormatter();
+        try (InputStream inputStream = file.getInputStream();
+             Workbook workbook = new XSSFWorkbook(inputStream)) {
             // 获取第一个工作表
             Sheet sheet = workbook.getSheetAt(0);
             // 最后一行
@@ -45,21 +52,23 @@ public class ImportService {
                     User user = new User();
                     user.setId((int) row.getCell(0).getNumericCellValue());
                     user.setName(row.getCell(1).getStringCellValue());
-                    //user.setPassword(dataFormatter.formatCellValue(row.getCell(2))); // 数字 -> 字符串
-                    UserList.add(user);
+                    user.setPassword(Collections.singletonList(dataFormatter.formatCellValue(row.getCell(2))));
+                    // 数字 -> 字符串
+                    userList.add(user);
                 }
             }
-            workbook.close();
-            inputStream.close();
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new CustomException(500, e.getMessage());
         }
-        return UserList;
+        return userList;
     }
 
     /**
      * 使用easyExcel库导入
+     *
+     * @param file 文件
+     * @return 用户列表
      */
     public List<User> importByEasyExcel(MultipartFile file) {
         UserListener userListener = new UserListener();

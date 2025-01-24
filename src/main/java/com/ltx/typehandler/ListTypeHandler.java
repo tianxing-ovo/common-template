@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
  * 列表类型处理器
  * List <--> varchar
  * ["1", "2", "3"] <--> "1,2,3"
+ *
+ * @author tianxing
  */
 public class ListTypeHandler extends BaseTypeHandler<List<String>> {
 
@@ -23,9 +25,9 @@ public class ListTypeHandler extends BaseTypeHandler<List<String>> {
      * 设置非null参数
      *
      * @param preparedStatement 预编译SQL语句的对象
-     * @param index 参数索引
-     * @param list 字符串列表
-     * @param jdbcType 数据库字段类型
+     * @param index             参数索引
+     * @param list              字符串列表
+     * @param jdbcType          数据库字段类型
      * @throws SQLException SQL异常
      */
     @Override

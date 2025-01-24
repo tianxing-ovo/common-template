@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 
 /**
  * 消息发送者
+ *
+ * @author tianxing
  */
 @Component
 public class MessageSender {

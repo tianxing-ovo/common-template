@@ -1,12 +1,12 @@
-package com.ltx.entity;
+package com.ltx.entity.po;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ltx.annotation.SensitiveInfo;
-import com.ltx.easyExcel.converter.ListConverter;
-import com.ltx.easyExcel.converter.SexEnumConverter;
-import com.ltx.mybatisPlus.SexEnum;
+import com.ltx.easyexcel.converter.ListConverter;
+import com.ltx.easyexcel.converter.SexEnumConverter;
+import com.ltx.enums.SexEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @author tianxing
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

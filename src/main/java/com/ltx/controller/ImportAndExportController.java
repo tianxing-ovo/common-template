@@ -1,26 +1,25 @@
 package com.ltx.controller;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.ltx.easyExcel.service.ExportService;
-import com.ltx.easyExcel.service.ImportService;
-import com.ltx.entity.User;
+import com.ltx.easyexcel.service.ExportService;
+import com.ltx.easyexcel.service.ImportService;
+import com.ltx.entity.Result;
+import com.ltx.entity.po.User;
 import com.ltx.entity.request.ExportRequestBody;
 import com.ltx.mapper.UserMapper;
-import io.github.tianxingovo.common.R;
+import com.ltx.service.ExportTaskService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 导入和导出
+ * 导入和导出控制器
+ *
+ * @author tianxing
  */
 @RestController
 @Slf4j
@@ -36,28 +35,37 @@ public class ImportAndExportController {
     private ImportService importService;
 
     @Resource
-    private ThreadPoolExecutor executor;
+    private ExportTaskService exportTaskService;
 
     /**
-     * 使用poi库,导入xlsx文件
+     * 使用poi库导入xlsx文件
+     *
+     * @param file 文件
+     * @return 通用响应对象
      */
-    @PostMapping("/importByPOI")
-    public R importByPOI(@RequestPart("file") MultipartFile file) {
-        List<User> userList = importService.importByPOI(file);
-        return R.ok("导入成功").put("userList", userList);
+    @PostMapping("/import-by-poi")
+    public Result importByPoi(@RequestPart("file") MultipartFile file) {
+        List<User> userList = importService.importByPoi(file);
+        return Result.success().put("userList", userList);
     }
 
     /**
      * 使用easyExcel库导入
+     *
+     * @param file 文件
+     * @return 通用响应对象
      */
-    @PostMapping("/importByEasyExcel")
-    public R importByEasyExcel(@RequestPart("file") MultipartFile file) {
+    @PostMapping("/import-by-easyexcel")
+    public Result importByEasyExcel(@RequestPart("file") MultipartFile file) {
         List<User> userList = importService.importByEasyExcel(file);
-        return R.ok("导入成功").put("userList", userList);
+        return Result.success().put("userList", userList);
     }
 
     /**
-     * 使用easyExcel库,导出CSV文件到浏览器
+     * 使用easyExcel库导出CSV文件到浏览器
+     *
+     * @param response    响应
+     * @param requestBody 请求体
      */
     @PostMapping("/export")
     public void export(HttpServletResponse response, @RequestBody ExportRequestBody requestBody) {
@@ -66,18 +74,22 @@ public class ImportAndExportController {
     }
 
     /**
-     * 使用easyExcel库,异步导出CSV文件到本地
+     * 使用easyExcel库异步导出CSV文件到本地
+     *
+     * @param requestBody 请求体
      */
-    @PostMapping("/exportToLocal")
+    @PostMapping("/export-to-local")
     public void asyncExport(@RequestBody ExportRequestBody requestBody) {
-        executor.execute(() -> {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            List<User> list = userMapper.select();
-            exportService.exportToLocal(list, requestBody, User.class, ExcelTypeEnum.CSV);
-        });
+        exportService.asyncExport(requestBody);
+    }
+
+    /**
+     * 查询当前用户导出任务列表
+     *
+     * @return 通用响应对象
+     */
+    @GetMapping("/export-task-list")
+    public Result exportTaskList() {
+        return Result.success().put("exportTaskList", exportTaskService.queryExportTaskList());
     }
 }
