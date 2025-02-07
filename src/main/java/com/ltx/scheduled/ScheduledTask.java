@@ -16,10 +16,11 @@ import javax.annotation.Resource;
  * @author tianxing
  */
 @Component
-@Slf4j
+@Slf4j(topic = "ScheduledTask")
 public class ScheduledTask {
 
-    private final String cron = "0 0 * * * ?";
+    // 秒 分 时 日 月 周
+    private final String cron = "* * * * * ?";
 
     @Resource
     private RedissonUtil redissonUtil;
@@ -35,35 +36,27 @@ public class ScheduledTask {
     public void runTask(Runnable runnable, String name, long waitTime, long leaseTime) {
         // 分布式锁保证定时任务只执行一次
         RLock lock = redissonUtil.getLock(name);
-        boolean b = false;
         try {
-            b = redissonUtil.tryLock(lock, waitTime, leaseTime);
-            if (!b) {
+            if (!redissonUtil.tryLock(lock, waitTime, leaseTime)) {
+                log.info("获取锁失败");
                 return;
             }
             // 执行具体的定时任务代码逻辑
             runnable.run();
         } finally {
             // 释放锁
-            if (b && lock.isHeldByCurrentThread()) {
+            if (lock.isHeldByCurrentThread()) {
                 redissonUtil.unlock(lock);
             }
         }
     }
 
     /**
-     * 秒 分 时 日 月 周
+     * 每秒执行一次
      */
     @Scheduled(cron = cron)
     @Async
     public void runTask() {
-        runTask(() -> {
-            log.info("定时任务执行中...");
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }, "lock", 1, 1);
+        runTask(() -> log.info("定时任务执行中..."), "lock", 1, 1);
     }
 }
